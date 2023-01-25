@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/justin/coding_projects/numerical_methods/numerical_methods/src/main.cpp
+iostream
+-
+euler_method.h
+-
+
+include/euler_method.h
+
