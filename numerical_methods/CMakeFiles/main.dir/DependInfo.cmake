@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/justin/coding_projects/numerical_methods/numerical_methods/src/euler_class_main.cpp" "/home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles/main.dir/src/euler_class_main.cpp.o"
   "/home/justin/coding_projects/numerical_methods/numerical_methods/src/euler_method.cpp" "/home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles/main.dir/src/euler_method.cpp.o"
-  "/home/justin/coding_projects/numerical_methods/numerical_methods/src/main.cpp" "/home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles/main.dir/src/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

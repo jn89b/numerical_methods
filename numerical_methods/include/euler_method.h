@@ -7,23 +7,26 @@ class EulerMethod
 {
     public:
         // create a constructor
-        EulerMethod(double x0, double y0, double h, double x);
+        EulerMethod(double x0, double y0, double h, int N);
 
         // create a destructor
         ~EulerMethod();
 
-        //set values for x0, y0, h, x
-        void set_values(double x0, double y0, double h, double x);
+        //set values for x0, y0, h, N
+        void set_values(double x0, double y0, double h, int N);
 
         //method to compute the y
-        double compute_y();
+        // double invoke_function(double (*approximate_function)(double, double));
+        double approximate_function(double &x, double &y);
+
+        void compute_y();
 
     private:
         // variables
         double x0;
         double y0;
         double h;
-        double x;
+        int N;
 
 };
 

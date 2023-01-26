@@ -9,7 +9,8 @@ project (numerical_methods)
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES
     src/euler_method.cpp
-    src/main.cpp
+    #src/main.cpp
+    src/euler_class_main.cpp
 )
 
 # Add an executable with the above sources

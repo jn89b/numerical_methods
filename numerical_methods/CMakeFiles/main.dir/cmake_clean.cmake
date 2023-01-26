@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/main.dir/src/euler_class_main.cpp.o"
   "CMakeFiles/main.dir/src/euler_method.cpp.o"
-  "CMakeFiles/main.dir/src/main.cpp.o"
   "main"
   "main.pdb"
 )

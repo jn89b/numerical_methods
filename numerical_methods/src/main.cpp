@@ -3,7 +3,7 @@
 
 //euler method main
 
-float approximate_function(float x, float y)
+double approximate_function(double &x, double &y)
 {   
     //from the hw y'=y-x^2+1
     return y-(x*x)+1;
@@ -29,11 +29,5 @@ int main()
 
     }
 
-    // // create an object of EulerMethod
-    // EulerMethod euler(0, 1, 0.1, 0.5);
-    // // compute the y
-    // double y = euler.compute_y();
-    // // print the result
-    // std::cout << "y = " << y << std::endl;
     return 0;
 }

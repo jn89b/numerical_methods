@@ -123,6 +123,33 @@ main/fast:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
+src/euler_class_main.o: src/euler_class_main.cpp.o
+
+.PHONY : src/euler_class_main.o
+
+# target to build an object file
+src/euler_class_main.cpp.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/euler_class_main.cpp.o
+.PHONY : src/euler_class_main.cpp.o
+
+src/euler_class_main.i: src/euler_class_main.cpp.i
+
+.PHONY : src/euler_class_main.i
+
+# target to preprocess a source file
+src/euler_class_main.cpp.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/euler_class_main.cpp.i
+.PHONY : src/euler_class_main.cpp.i
+
+src/euler_class_main.s: src/euler_class_main.cpp.s
+
+.PHONY : src/euler_class_main.s
+
+# target to generate assembly for a file
+src/euler_class_main.cpp.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/euler_class_main.cpp.s
+.PHONY : src/euler_class_main.cpp.s
+
 src/euler_method.o: src/euler_method.cpp.o
 
 .PHONY : src/euler_method.o
@@ -150,33 +177,6 @@ src/euler_method.cpp.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/euler_method.cpp.s
 .PHONY : src/euler_method.cpp.s
 
-src/main.o: src/main.cpp.o
-
-.PHONY : src/main.o
-
-# target to build an object file
-src/main.cpp.o:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
-
-src/main.i: src/main.cpp.i
-
-.PHONY : src/main.i
-
-# target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
-
-src/main.s: src/main.cpp.s
-
-.PHONY : src/main.s
-
-# target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -186,12 +186,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... main"
+	@echo "... src/euler_class_main.o"
+	@echo "... src/euler_class_main.i"
+	@echo "... src/euler_class_main.s"
 	@echo "... src/euler_method.o"
 	@echo "... src/euler_method.i"
 	@echo "... src/euler_method.s"
-	@echo "... src/main.o"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
 .PHONY : help
 
 
