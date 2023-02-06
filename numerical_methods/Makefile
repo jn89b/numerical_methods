@@ -124,17 +124,17 @@ main/fast:
 .PHONY : main/fast
 
 #=============================================================================
-# Target rules for targets named taylor_simple2
+# Target rules for targets named taylor_methods
 
 # Build rule for target.
-taylor_simple2: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 taylor_simple2
-.PHONY : taylor_simple2
+taylor_methods: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 taylor_methods
+.PHONY : taylor_methods
 
 # fast build rule for target.
-taylor_simple2/fast:
-	$(MAKE) -f CMakeFiles/taylor_simple2.dir/build.make CMakeFiles/taylor_simple2.dir/build
-.PHONY : taylor_simple2/fast
+taylor_methods/fast:
+	$(MAKE) -f CMakeFiles/taylor_methods.dir/build.make CMakeFiles/taylor_methods.dir/build
+.PHONY : taylor_methods/fast
 
 #=============================================================================
 # Target rules for targets named euler_main
@@ -230,32 +230,32 @@ src/euler_method.cpp.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/euler_method.cpp.s
 .PHONY : src/euler_method.cpp.s
 
-src/taylor_simple2.o: src/taylor_simple2.cpp.o
+src/taylor_methods.o: src/taylor_methods.cpp.o
 
-.PHONY : src/taylor_simple2.o
+.PHONY : src/taylor_methods.o
 
 # target to build an object file
-src/taylor_simple2.cpp.o:
-	$(MAKE) -f CMakeFiles/taylor_simple2.dir/build.make CMakeFiles/taylor_simple2.dir/src/taylor_simple2.cpp.o
-.PHONY : src/taylor_simple2.cpp.o
+src/taylor_methods.cpp.o:
+	$(MAKE) -f CMakeFiles/taylor_methods.dir/build.make CMakeFiles/taylor_methods.dir/src/taylor_methods.cpp.o
+.PHONY : src/taylor_methods.cpp.o
 
-src/taylor_simple2.i: src/taylor_simple2.cpp.i
+src/taylor_methods.i: src/taylor_methods.cpp.i
 
-.PHONY : src/taylor_simple2.i
+.PHONY : src/taylor_methods.i
 
 # target to preprocess a source file
-src/taylor_simple2.cpp.i:
-	$(MAKE) -f CMakeFiles/taylor_simple2.dir/build.make CMakeFiles/taylor_simple2.dir/src/taylor_simple2.cpp.i
-.PHONY : src/taylor_simple2.cpp.i
+src/taylor_methods.cpp.i:
+	$(MAKE) -f CMakeFiles/taylor_methods.dir/build.make CMakeFiles/taylor_methods.dir/src/taylor_methods.cpp.i
+.PHONY : src/taylor_methods.cpp.i
 
-src/taylor_simple2.s: src/taylor_simple2.cpp.s
+src/taylor_methods.s: src/taylor_methods.cpp.s
 
-.PHONY : src/taylor_simple2.s
+.PHONY : src/taylor_methods.s
 
 # target to generate assembly for a file
-src/taylor_simple2.cpp.s:
-	$(MAKE) -f CMakeFiles/taylor_simple2.dir/build.make CMakeFiles/taylor_simple2.dir/src/taylor_simple2.cpp.s
-.PHONY : src/taylor_simple2.cpp.s
+src/taylor_methods.cpp.s:
+	$(MAKE) -f CMakeFiles/taylor_methods.dir/build.make CMakeFiles/taylor_methods.dir/src/taylor_methods.cpp.s
+.PHONY : src/taylor_methods.cpp.s
 
 # Help Target
 help:
@@ -266,7 +266,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... main"
-	@echo "... taylor_simple2"
+	@echo "... taylor_methods"
 	@echo "... euler_main"
 	@echo "... src/euler_class_main.o"
 	@echo "... src/euler_class_main.i"
@@ -277,9 +277,9 @@ help:
 	@echo "... src/euler_method.o"
 	@echo "... src/euler_method.i"
 	@echo "... src/euler_method.s"
-	@echo "... src/taylor_simple2.o"
-	@echo "... src/taylor_simple2.i"
-	@echo "... src/taylor_simple2.s"
+	@echo "... src/taylor_methods.o"
+	@echo "... src/taylor_methods.i"
+	@echo "... src/taylor_methods.s"
 .PHONY : help
 
 

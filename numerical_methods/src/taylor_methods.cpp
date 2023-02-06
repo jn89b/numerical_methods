@@ -14,6 +14,11 @@ due next wednesday
 
 const double EULER = 2.71828182845904523536;
 
+double actual_function(double &x)
+{
+    return (x+1)*(x+1)-0.5*exp(x);
+}
+
 double function(double &x, double &y)
 {   
     return y-pow(x,2)+1;
@@ -34,33 +39,49 @@ double dddfunction (double &x, double &y)
     return function(x, y) - 2*x - 2;
 }
 
+double compute_error(double &x, double &y)
+{
+    return std::abs(actual_function(x) - y);
+}
+
+
 void taylor2(const double &h, double &y0, double &x0, int &N)
 {
-    //test for loop for function c++ 
+    double error = 0.0;
     std::cout<<"taylor2" << std::endl;
-    std::cout<< "x" << "\t" << "y guess" << std::endl;
-
+    std::cout<< "x" << "\t" << "y guess" << "\t" << \
+    "error" << std::endl;
+    
     for (int i = 0; i <= N; i++)
     {
-
         //cout as table format 
-        std::cout<< x0 << "\t" << y0 << std::endl;
+        std::cout<< x0 << "\t" << y0 << 
+        "\t" << error << std::endl; 
+        
+        error = compute_error(x0, y0);
+        
         y0 = y0 + (h * function(x0, y0)) + ((pow(h,2) /2) * dfunction(x0, y0));
         x0 = x0 + h;
     }
 }
 
+
 void taylor4(const double &h, double &y0, double &x0, int &N)
 {
 
+    double error = 0.0;
     std::cout<<"taylor4" << std::endl;
-    std::cout<< "x" << "\t" << "y guess" << std::endl;
-
+    std::cout<< "x" << "\t" << "y guess" << "\t" << \
+    "error" << std::endl;
+    
     for (int i = 0; i <= N; i++)
     {
 
         //cout as table format 
-        std::cout<< x0 << "\t" << y0 << std::endl;
+        std::cout<< x0 << "\t" << y0 << 
+        "\t" << error << std::endl; 
+        
+        error = compute_error(x0, y0);
 
         y0 = y0 + (h * function(x0, y0)) + \
             ((pow(h,2) /2) * dfunction(x0, y0)) + \
@@ -68,6 +89,8 @@ void taylor4(const double &h, double &y0, double &x0, int &N)
             ((pow(h,4) /24) * dddfunction(x0, y0));
         
         x0 = x0 + h;
+        
+
     }
 
 }

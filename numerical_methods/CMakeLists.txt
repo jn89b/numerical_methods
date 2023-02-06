@@ -14,7 +14,7 @@ set(SOURCES
 
 # Add an executable with the above sources
 add_executable(euler_main src/euler_main.cpp)
-add_executable(taylor_simple2 src/taylor_simple2.cpp)
+add_executable(taylor_methods src/taylor_methods.cpp)
 
 
 add_executable(main ${SOURCES})

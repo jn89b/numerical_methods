@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/justin/coding_projects/numerical_methods/numerical_meth
 
 # The main recursive "all" target.
 all: CMakeFiles/main.dir/all
-all: CMakeFiles/taylor_simple2.dir/all
+all: CMakeFiles/taylor_methods.dir/all
 all: CMakeFiles/euler_main.dir/all
 
 .PHONY : all
@@ -66,7 +66,7 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/main.dir/clean
-clean: CMakeFiles/taylor_simple2.dir/clean
+clean: CMakeFiles/taylor_methods.dir/clean
 clean: CMakeFiles/euler_main.dir/clean
 
 .PHONY : clean
@@ -99,31 +99,31 @@ CMakeFiles/main.dir/clean:
 .PHONY : CMakeFiles/main.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/taylor_simple2.dir
+# Target rules for target CMakeFiles/taylor_methods.dir
 
 # All Build rule for target.
-CMakeFiles/taylor_simple2.dir/all:
-	$(MAKE) -f CMakeFiles/taylor_simple2.dir/build.make CMakeFiles/taylor_simple2.dir/depend
-	$(MAKE) -f CMakeFiles/taylor_simple2.dir/build.make CMakeFiles/taylor_simple2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles --progress-num=6,7 "Built target taylor_simple2"
-.PHONY : CMakeFiles/taylor_simple2.dir/all
+CMakeFiles/taylor_methods.dir/all:
+	$(MAKE) -f CMakeFiles/taylor_methods.dir/build.make CMakeFiles/taylor_methods.dir/depend
+	$(MAKE) -f CMakeFiles/taylor_methods.dir/build.make CMakeFiles/taylor_methods.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles --progress-num=6,7 "Built target taylor_methods"
+.PHONY : CMakeFiles/taylor_methods.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/taylor_simple2.dir/rule: cmake_check_build_system
+CMakeFiles/taylor_methods.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/taylor_simple2.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/taylor_methods.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles 0
-.PHONY : CMakeFiles/taylor_simple2.dir/rule
+.PHONY : CMakeFiles/taylor_methods.dir/rule
 
 # Convenience name for target.
-taylor_simple2: CMakeFiles/taylor_simple2.dir/rule
+taylor_methods: CMakeFiles/taylor_methods.dir/rule
 
-.PHONY : taylor_simple2
+.PHONY : taylor_methods
 
 # clean rule for target.
-CMakeFiles/taylor_simple2.dir/clean:
-	$(MAKE) -f CMakeFiles/taylor_simple2.dir/build.make CMakeFiles/taylor_simple2.dir/clean
-.PHONY : CMakeFiles/taylor_simple2.dir/clean
+CMakeFiles/taylor_methods.dir/clean:
+	$(MAKE) -f CMakeFiles/taylor_methods.dir/build.make CMakeFiles/taylor_methods.dir/clean
+.PHONY : CMakeFiles/taylor_methods.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/euler_main.dir
