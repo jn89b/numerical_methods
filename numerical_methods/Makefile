@@ -123,6 +123,32 @@ main/fast:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
+#=============================================================================
+# Target rules for targets named taylor_simple2
+
+# Build rule for target.
+taylor_simple2: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 taylor_simple2
+.PHONY : taylor_simple2
+
+# fast build rule for target.
+taylor_simple2/fast:
+	$(MAKE) -f CMakeFiles/taylor_simple2.dir/build.make CMakeFiles/taylor_simple2.dir/build
+.PHONY : taylor_simple2/fast
+
+#=============================================================================
+# Target rules for targets named euler_main
+
+# Build rule for target.
+euler_main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 euler_main
+.PHONY : euler_main
+
+# fast build rule for target.
+euler_main/fast:
+	$(MAKE) -f CMakeFiles/euler_main.dir/build.make CMakeFiles/euler_main.dir/build
+.PHONY : euler_main/fast
+
 src/euler_class_main.o: src/euler_class_main.cpp.o
 
 .PHONY : src/euler_class_main.o
@@ -149,6 +175,33 @@ src/euler_class_main.s: src/euler_class_main.cpp.s
 src/euler_class_main.cpp.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/euler_class_main.cpp.s
 .PHONY : src/euler_class_main.cpp.s
+
+src/euler_main.o: src/euler_main.cpp.o
+
+.PHONY : src/euler_main.o
+
+# target to build an object file
+src/euler_main.cpp.o:
+	$(MAKE) -f CMakeFiles/euler_main.dir/build.make CMakeFiles/euler_main.dir/src/euler_main.cpp.o
+.PHONY : src/euler_main.cpp.o
+
+src/euler_main.i: src/euler_main.cpp.i
+
+.PHONY : src/euler_main.i
+
+# target to preprocess a source file
+src/euler_main.cpp.i:
+	$(MAKE) -f CMakeFiles/euler_main.dir/build.make CMakeFiles/euler_main.dir/src/euler_main.cpp.i
+.PHONY : src/euler_main.cpp.i
+
+src/euler_main.s: src/euler_main.cpp.s
+
+.PHONY : src/euler_main.s
+
+# target to generate assembly for a file
+src/euler_main.cpp.s:
+	$(MAKE) -f CMakeFiles/euler_main.dir/build.make CMakeFiles/euler_main.dir/src/euler_main.cpp.s
+.PHONY : src/euler_main.cpp.s
 
 src/euler_method.o: src/euler_method.cpp.o
 
@@ -177,6 +230,33 @@ src/euler_method.cpp.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/euler_method.cpp.s
 .PHONY : src/euler_method.cpp.s
 
+src/taylor_simple2.o: src/taylor_simple2.cpp.o
+
+.PHONY : src/taylor_simple2.o
+
+# target to build an object file
+src/taylor_simple2.cpp.o:
+	$(MAKE) -f CMakeFiles/taylor_simple2.dir/build.make CMakeFiles/taylor_simple2.dir/src/taylor_simple2.cpp.o
+.PHONY : src/taylor_simple2.cpp.o
+
+src/taylor_simple2.i: src/taylor_simple2.cpp.i
+
+.PHONY : src/taylor_simple2.i
+
+# target to preprocess a source file
+src/taylor_simple2.cpp.i:
+	$(MAKE) -f CMakeFiles/taylor_simple2.dir/build.make CMakeFiles/taylor_simple2.dir/src/taylor_simple2.cpp.i
+.PHONY : src/taylor_simple2.cpp.i
+
+src/taylor_simple2.s: src/taylor_simple2.cpp.s
+
+.PHONY : src/taylor_simple2.s
+
+# target to generate assembly for a file
+src/taylor_simple2.cpp.s:
+	$(MAKE) -f CMakeFiles/taylor_simple2.dir/build.make CMakeFiles/taylor_simple2.dir/src/taylor_simple2.cpp.s
+.PHONY : src/taylor_simple2.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -186,12 +266,20 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... main"
+	@echo "... taylor_simple2"
+	@echo "... euler_main"
 	@echo "... src/euler_class_main.o"
 	@echo "... src/euler_class_main.i"
 	@echo "... src/euler_class_main.s"
+	@echo "... src/euler_main.o"
+	@echo "... src/euler_main.i"
+	@echo "... src/euler_main.s"
 	@echo "... src/euler_method.o"
 	@echo "... src/euler_method.i"
 	@echo "... src/euler_method.s"
+	@echo "... src/taylor_simple2.o"
+	@echo "... src/taylor_simple2.i"
+	@echo "... src/taylor_simple2.s"
 .PHONY : help
 
 

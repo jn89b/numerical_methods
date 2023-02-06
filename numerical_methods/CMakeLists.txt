@@ -9,11 +9,14 @@ project (numerical_methods)
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES
     src/euler_method.cpp
-    #src/main.cpp
     src/euler_class_main.cpp
 )
 
 # Add an executable with the above sources
+add_executable(euler_main src/euler_main.cpp)
+add_executable(taylor_simple2 src/taylor_simple2.cpp)
+
+
 add_executable(main ${SOURCES})
 
 # Set the directories that should be included in the build command for this target

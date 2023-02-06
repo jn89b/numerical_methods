@@ -1,3 +1,5 @@
 /home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles/rebuild_cache.dir
 /home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles/edit_cache.dir
 /home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles/main.dir
+/home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles/taylor_simple2.dir
+/home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles/euler_main.dir

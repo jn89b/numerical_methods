@@ -16,8 +16,15 @@ class EulerMethod
         void set_values(double x0, double y0, double h, int N);
 
         //method to compute the y
-        // double invoke_function(double (*approximate_function)(double, double));
+        double invoke_function(double &x, double &y, 
+            double (*approximate_function)(double, double));
+        
         double approximate_function(double &x, double &y);
+
+        double compute_bound_error(double x);
+
+        //method actual function 
+        double actual_function(double &x);
 
         void compute_y();
 
