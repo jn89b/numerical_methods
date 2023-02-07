@@ -6,5 +6,5 @@ CXX_FLAGS =
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/justin/coding_projects/numerical_methods/numerical_methods/include 
+CXX_INCLUDES = -I/usr/include/eigen3 -I/home/justin/coding_projects/numerical_methods/numerical_methods/include 
 

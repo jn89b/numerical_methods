@@ -6,6 +6,11 @@ cmake_minimum_required(VERSION 3.5)
 # Set the project name
 project (numerical_methods)
 
+#include Eigen
+include_directories(/usr/include/eigen3)
+
+
+
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES
     src/euler_method.cpp

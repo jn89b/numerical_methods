@@ -6,13 +6,3 @@
 
 #IncludeRegexTransform: 
 
-/home/justin/coding_projects/numerical_methods/numerical_methods/src/euler_method.cpp
-euler_method.h
--
-iostream
--
-cmath
--
-
-include/euler_method.h
-
