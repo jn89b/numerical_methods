@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/numerical_methods.dir/src/euler_method.cpp.o CMakeFiles/numerical_methods.dir/src/main.cpp.o  -o numerical_methods 

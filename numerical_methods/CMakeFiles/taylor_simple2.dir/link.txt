@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/taylor_simple2.dir/src/taylor_simple2.cpp.o  -o taylor_simple2 

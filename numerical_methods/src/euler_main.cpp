@@ -9,6 +9,8 @@ typedef struct eulerInfo
     Eigen::VectorXd x;
     Eigen::VectorXd y;
     Eigen::VectorXd local_error;
+    Eigen::VectorXd true_y;
+    Eigen::VectorXd bounded_error;
     const double h;
 
 } eulerInfo;
@@ -24,19 +26,24 @@ double function(double &x, double &y)
     return y-(x*x)+1;
 }
 
+double dfunction (double &x, double &y)
+{
+    return y - pow(x,2) -2*x + 1;
+}
+
 
 double compute_error(double &x, double &y)
 {
     return std::abs(actual_function(x) - y);
 }
 
-
 eulerInfo euler(const double &h, double &y0, double &x0, int &N)
 {
-    //create an local_error vector
     Eigen::VectorXd y(N);
     Eigen::VectorXd x(N);
     Eigen::VectorXd local_error(N);
+    Eigen::VectorXd true_y(N);
+    Eigen::VectorXd bounded_error(N);
 
     double y_guess = y0;
     double x_current = x0; 
@@ -49,9 +56,12 @@ eulerInfo euler(const double &h, double &y0, double &x0, int &N)
         x(i) = x_current;
         y(i) = y_guess;
         local_error(i) = compute_error(x_current, y_guess);
+        true_y(i) = actual_function(x_current);
+        bounded_error(i) = abs(dfunction(x_current, y_guess));
     }
 
-    eulerInfo eulerHistory = {N, x, y, local_error, h};
+    eulerInfo eulerHistory = {N, x, y, 
+        local_error, true_y, bounded_error, h};
 
     return eulerHistory;
 }
@@ -109,18 +119,6 @@ void five_2_c()
     eulerInfo eulerHistory2 = euler(h2, y0, x0, N2);
     eulerInfo eulerHistory3 = euler(h3, y0, x0, N3);
     eulerInfo eulerHistory4 = euler(h4, y0, x0, N4);
-    
-    // std::cout << std::endl;
-    // print_euler(eulerHistory1, "Euler 1");
-
-    // std::cout << std::endl;
-    // print_euler(eulerHistory2, "Euler 2");
-
-    // std::cout << std::endl;
-    // print_euler(eulerHistory3, "Euler 3");
-
-    // std::cout << std::endl;
-    // print_euler(eulerHistory4, "Euler 4");
 
     Eigen::VectorXd other_element2 = get_other_element(
         eulerHistory2.local_error, N2/10);
@@ -138,13 +136,6 @@ void five_2_c()
 
     Eigen::VectorXd ratio3 = other_element4.array() / other_element3.array();
 
-    // //print out the values
-    // std::cout << std::endl;
-    // std::cout<< "Ratio 1" << ratio1 << std::endl;
-    // std::cout << std::endl;
-    // std::cout<< "Ratio 2" << ratio2 << std::endl;
-    // std::cout << std::endl;
-    // std::cout<< "Ratio 3" << ratio3 << std::endl;
 
     std::cout<< "h" << "\t" << "R1" << "\t" << "\t" << \ 
     "R2" << "\t" <<  "\t" << "R3" << std::endl;
@@ -157,6 +148,38 @@ void five_2_c()
 
 }
 
+void five_2_d(){
+
+    double error = 100;
+    double error_tolerance = 1e-4;
+
+    double h = 0.2;
+    double y0 = 0.5;
+    double x0 = 0.0;
+    int N = 10; //number of iterations
+
+    std::cout<< "h" << "\t"  << "\t" << "N" \ 
+    "\t" << "max error" << "\t" << std::endl;
+
+    eulerInfo eulerHistory1 = euler(h, y0, x0, N);
+    while (error > error_tolerance)
+    {
+
+        eulerInfo eulerHistory = euler(h, y0, x0, N);
+        error = eulerHistory.local_error.maxCoeff();
+
+        // double ME; 
+        double ME = eulerHistory.bounded_error.maxCoeff(&ME);
+
+        h = (error_tolerance * 2)/ (ME * exp(2) - 1);
+        
+        N = ceil((2.0)/h);
+
+        std::cout<< h << "\t" << N << "\t" << error << "\t" << std::endl;
+
+    }   
+}
+
 int main()
 {
     const double h = 0.2;
@@ -164,20 +187,9 @@ int main()
     double x0 = 0.0;
     int N = 10; //number of iterations
 
-    // eulerInfo eulerHistory1 = euler(h, y0, x0, N);
-
-    // //print out the values
-    // print_euler(eulerHistory1, "Euler 1");
-
-    // std::cout<< std::endl;
-
-    // //create a new euler method
-    // eulerInfo eulerHistory2 = euler(h, y0, x0, N);
-    
-    // //print out the values
-    // print_euler(eulerHistory2, "Euler 2");
 
     five_2_c();
+    // five_2_d();
 
 
     return 0;

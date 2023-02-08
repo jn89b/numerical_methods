@@ -84,5 +84,5 @@ endif()
 
 set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES "/usr/include/c++/9;/usr/include/x86_64-linux-gnu/c++/9;/usr/include/c++/9/backward;/usr/lib/gcc/x86_64-linux-gnu/9/include;/usr/local/include;/usr/include/x86_64-linux-gnu;/usr/include")
 set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES "stdc++;m;gcc_s;gcc;c;gcc_s;gcc")
-set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "/home/justin/ros2/install/umkc_mpc_ros/lib;/home/justin/ros2/install/turtlebot3_msgs/lib;/home/justin/AirSim/ros2/install/airsim_ros_pkgs/lib;/home/justin/AirSim/ros2/install/airsim_interfaces/lib;/opt/ros/foxy/opt/yaml_cpp_vendor/lib;/opt/ros/foxy/opt/rviz_ogre_vendor/lib;/opt/ros/foxy/lib/x86_64-linux-gnu;/opt/ros/foxy/lib;/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib;/usr/lib/x86_64-linux-gnu/gazebo-11/plugins")
+set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib")
 set(CMAKE_CXX_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")
