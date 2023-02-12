@@ -1,2 +1,2 @@
 #don't add CMAKEFiles
-add_subdirectory(CMAKEFiles)
+**/numerical_methods/CMakeFiles/*
