@@ -48,6 +48,12 @@ double EulerMethod::compute_bound_error(double x)
 
 void EulerMethod::compute_y()
 {
+    
+    std::cout << "Euler Method" << std::endl;
+    std::cout<< "h" << "\t" << "x" << \
+    "\t" << "w_i" << "\t" << "y_actual" << "\t" 
+    << "bounded error" << std::endl;    
+
     for (int i =0; i < N; i++)
     {
 
@@ -58,12 +64,9 @@ void EulerMethod::compute_y()
         double diff =std::abs(actual_y - y0);
         double bounded_error = compute_bound_error(x0);
 
-        std::cout << "w_i = " << y0 << std::endl;
-        std::cout << "x = " << x0 << std::endl;
-        std::cout << "actual y = " << actual_y << std::endl;
-        std::cout << "error = " << diff << std::endl;
-        std::cout << "bounded error = " << bounded_error << std::endl;
-        std::cout<< std::endl;
+        std::cout << h << "\t" << x0 << "\t" << y0 << "\t" 
+        << actual_y << "\t" << bounded_error << std::endl;
+        
 
         set_values(x, y, h, N);       
 

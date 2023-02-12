@@ -54,8 +54,8 @@ CMAKE_BINARY_DIR = /home/justin/coding_projects/numerical_methods/numerical_meth
 
 # The main recursive "all" target.
 all: CMakeFiles/main.dir/all
+all: CMakeFiles/euler_methods.dir/all
 all: CMakeFiles/taylor_methods.dir/all
-all: CMakeFiles/euler_main.dir/all
 
 .PHONY : all
 
@@ -66,8 +66,8 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/main.dir/clean
+clean: CMakeFiles/euler_methods.dir/clean
 clean: CMakeFiles/taylor_methods.dir/clean
-clean: CMakeFiles/euler_main.dir/clean
 
 .PHONY : clean
 
@@ -99,6 +99,33 @@ CMakeFiles/main.dir/clean:
 .PHONY : CMakeFiles/main.dir/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/euler_methods.dir
+
+# All Build rule for target.
+CMakeFiles/euler_methods.dir/all:
+	$(MAKE) -f CMakeFiles/euler_methods.dir/build.make CMakeFiles/euler_methods.dir/depend
+	$(MAKE) -f CMakeFiles/euler_methods.dir/build.make CMakeFiles/euler_methods.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles --progress-num=1,2 "Built target euler_methods"
+.PHONY : CMakeFiles/euler_methods.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/euler_methods.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/euler_methods.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles 0
+.PHONY : CMakeFiles/euler_methods.dir/rule
+
+# Convenience name for target.
+euler_methods: CMakeFiles/euler_methods.dir/rule
+
+.PHONY : euler_methods
+
+# clean rule for target.
+CMakeFiles/euler_methods.dir/clean:
+	$(MAKE) -f CMakeFiles/euler_methods.dir/build.make CMakeFiles/euler_methods.dir/clean
+.PHONY : CMakeFiles/euler_methods.dir/clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/taylor_methods.dir
 
 # All Build rule for target.
@@ -124,33 +151,6 @@ taylor_methods: CMakeFiles/taylor_methods.dir/rule
 CMakeFiles/taylor_methods.dir/clean:
 	$(MAKE) -f CMakeFiles/taylor_methods.dir/build.make CMakeFiles/taylor_methods.dir/clean
 .PHONY : CMakeFiles/taylor_methods.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/euler_main.dir
-
-# All Build rule for target.
-CMakeFiles/euler_main.dir/all:
-	$(MAKE) -f CMakeFiles/euler_main.dir/build.make CMakeFiles/euler_main.dir/depend
-	$(MAKE) -f CMakeFiles/euler_main.dir/build.make CMakeFiles/euler_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles --progress-num=1,2 "Built target euler_main"
-.PHONY : CMakeFiles/euler_main.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/euler_main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/euler_main.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/justin/coding_projects/numerical_methods/numerical_methods/CMakeFiles 0
-.PHONY : CMakeFiles/euler_main.dir/rule
-
-# Convenience name for target.
-euler_main: CMakeFiles/euler_main.dir/rule
-
-.PHONY : euler_main
-
-# clean rule for target.
-CMakeFiles/euler_main.dir/clean:
-	$(MAKE) -f CMakeFiles/euler_main.dir/build.make CMakeFiles/euler_main.dir/clean
-.PHONY : CMakeFiles/euler_main.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

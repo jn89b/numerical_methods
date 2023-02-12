@@ -10,7 +10,6 @@ project (numerical_methods)
 include_directories(/usr/include/eigen3)
 
 
-
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES
     src/euler_method.cpp
@@ -18,9 +17,9 @@ set(SOURCES
 )
 
 # Add an executable with the above sources
-add_executable(euler_main src/euler_main.cpp)
+# add_executable(euler_main src/euler_main.cpp)
 add_executable(taylor_methods src/taylor_methods.cpp)
-
+add_executable(euler_methods src/euler_methods.cpp)
 
 add_executable(main ${SOURCES})
 

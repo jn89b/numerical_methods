@@ -124,6 +124,19 @@ main/fast:
 .PHONY : main/fast
 
 #=============================================================================
+# Target rules for targets named euler_methods
+
+# Build rule for target.
+euler_methods: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 euler_methods
+.PHONY : euler_methods
+
+# fast build rule for target.
+euler_methods/fast:
+	$(MAKE) -f CMakeFiles/euler_methods.dir/build.make CMakeFiles/euler_methods.dir/build
+.PHONY : euler_methods/fast
+
+#=============================================================================
 # Target rules for targets named taylor_methods
 
 # Build rule for target.
@@ -135,19 +148,6 @@ taylor_methods: cmake_check_build_system
 taylor_methods/fast:
 	$(MAKE) -f CMakeFiles/taylor_methods.dir/build.make CMakeFiles/taylor_methods.dir/build
 .PHONY : taylor_methods/fast
-
-#=============================================================================
-# Target rules for targets named euler_main
-
-# Build rule for target.
-euler_main: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 euler_main
-.PHONY : euler_main
-
-# fast build rule for target.
-euler_main/fast:
-	$(MAKE) -f CMakeFiles/euler_main.dir/build.make CMakeFiles/euler_main.dir/build
-.PHONY : euler_main/fast
 
 src/euler_class_main.o: src/euler_class_main.cpp.o
 
@@ -176,33 +176,6 @@ src/euler_class_main.cpp.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/euler_class_main.cpp.s
 .PHONY : src/euler_class_main.cpp.s
 
-src/euler_main.o: src/euler_main.cpp.o
-
-.PHONY : src/euler_main.o
-
-# target to build an object file
-src/euler_main.cpp.o:
-	$(MAKE) -f CMakeFiles/euler_main.dir/build.make CMakeFiles/euler_main.dir/src/euler_main.cpp.o
-.PHONY : src/euler_main.cpp.o
-
-src/euler_main.i: src/euler_main.cpp.i
-
-.PHONY : src/euler_main.i
-
-# target to preprocess a source file
-src/euler_main.cpp.i:
-	$(MAKE) -f CMakeFiles/euler_main.dir/build.make CMakeFiles/euler_main.dir/src/euler_main.cpp.i
-.PHONY : src/euler_main.cpp.i
-
-src/euler_main.s: src/euler_main.cpp.s
-
-.PHONY : src/euler_main.s
-
-# target to generate assembly for a file
-src/euler_main.cpp.s:
-	$(MAKE) -f CMakeFiles/euler_main.dir/build.make CMakeFiles/euler_main.dir/src/euler_main.cpp.s
-.PHONY : src/euler_main.cpp.s
-
 src/euler_method.o: src/euler_method.cpp.o
 
 .PHONY : src/euler_method.o
@@ -229,6 +202,33 @@ src/euler_method.s: src/euler_method.cpp.s
 src/euler_method.cpp.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/euler_method.cpp.s
 .PHONY : src/euler_method.cpp.s
+
+src/euler_methods.o: src/euler_methods.cpp.o
+
+.PHONY : src/euler_methods.o
+
+# target to build an object file
+src/euler_methods.cpp.o:
+	$(MAKE) -f CMakeFiles/euler_methods.dir/build.make CMakeFiles/euler_methods.dir/src/euler_methods.cpp.o
+.PHONY : src/euler_methods.cpp.o
+
+src/euler_methods.i: src/euler_methods.cpp.i
+
+.PHONY : src/euler_methods.i
+
+# target to preprocess a source file
+src/euler_methods.cpp.i:
+	$(MAKE) -f CMakeFiles/euler_methods.dir/build.make CMakeFiles/euler_methods.dir/src/euler_methods.cpp.i
+.PHONY : src/euler_methods.cpp.i
+
+src/euler_methods.s: src/euler_methods.cpp.s
+
+.PHONY : src/euler_methods.s
+
+# target to generate assembly for a file
+src/euler_methods.cpp.s:
+	$(MAKE) -f CMakeFiles/euler_methods.dir/build.make CMakeFiles/euler_methods.dir/src/euler_methods.cpp.s
+.PHONY : src/euler_methods.cpp.s
 
 src/taylor_methods.o: src/taylor_methods.cpp.o
 
@@ -266,17 +266,17 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... main"
+	@echo "... euler_methods"
 	@echo "... taylor_methods"
-	@echo "... euler_main"
 	@echo "... src/euler_class_main.o"
 	@echo "... src/euler_class_main.i"
 	@echo "... src/euler_class_main.s"
-	@echo "... src/euler_main.o"
-	@echo "... src/euler_main.i"
-	@echo "... src/euler_main.s"
 	@echo "... src/euler_method.o"
 	@echo "... src/euler_method.i"
 	@echo "... src/euler_method.s"
+	@echo "... src/euler_methods.o"
+	@echo "... src/euler_methods.i"
+	@echo "... src/euler_methods.s"
 	@echo "... src/taylor_methods.o"
 	@echo "... src/taylor_methods.i"
 	@echo "... src/taylor_methods.s"

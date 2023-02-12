@@ -190,9 +190,4 @@ int main()
 
     // print_taylor(taylorInfo2, "Hello");
 
-    // std::cout << std::endl;
-    // y0 = 0.5;
-    // x0 = 0.0;
-    // taylor4(h, y0, x0, N);
-
 }

@@ -15,6 +15,8 @@ typedef struct eulerInfo
 
 } eulerInfo;
 
+
+
 double actual_function(double &x)
 {
     return (x+1)*(x+1)-0.5*exp(x);
@@ -37,8 +39,28 @@ double compute_error(double &x, double &y)
     return std::abs(actual_function(x) - y);
 }
 
+
+
+
+// eulerInfo midpoint_method(const double &h, double &y0, double &x0, int &N)
+// {
+//     //instiantiate eulerInfo with 0 vectors
+//     eulerInfo eulerHistory;
+//     eulerHistory.N = N;
+//     eulerHistory.x = Eigen::VectorXd::Zero(N);
+//     eulerHistory.y = Eigen::VectorXd::Zero(N);
+//     eulerHistory.local_error = Eigen::VectorXd::Zero(N);
+//     eulerHistory.true_y = Eigen::VectorXd::Zero(N);
+//     eulerHistory.bounded_error = Eigen::VectorXd::Zero(N);
+//     eulerHistory.h = h;
+
+//     return eulerHistory;
+
+// }
+
 eulerInfo euler(const double &h, double &y0, double &x0, int &N)
 {
+    N = N+1;
     Eigen::VectorXd y(N);
     Eigen::VectorXd x(N);
     Eigen::VectorXd local_error(N);
@@ -88,7 +110,7 @@ Eigen::VectorXd get_other_element(const Eigen::VectorXd &vector, int element)
 
     Eigen::VectorXd other_element(m);
 
-    for (int i = 0; i < n; i+=element-1)
+    for (int i = 0; i < n; i+=element)
     {
 
         other_element(i/element) = vector(i);
