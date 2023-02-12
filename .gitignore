@@ -1,4 +1,7 @@
 #don't add CMAKEFiles
 **/numerical_methods/CMakeFiles/*
 
+
 **/CMAKEFiles/*
+
+*.cmake
