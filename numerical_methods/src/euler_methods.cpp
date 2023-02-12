@@ -14,7 +14,10 @@ typedef struct eulerInfo
     Eigen::VectorXd true_y;
     Eigen::VectorXd bounded_error;
     Eigen::VectorXd estimated_bounded_error;
-    const double h;
+    const double h; 
+    double best_h;
+    double error_tolerance = 1e-4;
+    double best_N;  
 
 } eulerInfo;
 
@@ -78,6 +81,11 @@ double compute_bound_error_estimate(const double&h, double L, double ME, double 
     return 0.1 * ME * (pow(EULER, x) - 1.0);
 }
 
+double compute_best_h(double error_tolerance, double ME)
+{
+    return (error_tolerance)/((ME/2) * (pow(EULER, 2.0) - 1.0));
+}
+
 eulerInfo get_euler_method_info(const double &h, double y0, double x0, int N)
 {
     eulerInfo eulerHistory = initialize_euler(h, y0, x0, N);
@@ -91,7 +99,6 @@ eulerInfo get_euler_method_info(const double &h, double y0, double x0, int N)
         eulerHistory.true_y(i) = actual_function(eulerHistory.x(i));
         eulerHistory.local_error(i) = compute_error(eulerHistory.true_y(i), eulerHistory.y(i));
         estimated_error_margin(i) = abs(compute_approx_ddy(x0, y0));
-
         y0 = compute_euler(h, eulerHistory.x(i), eulerHistory.y(i)); 
         x0 = eulerHistory.x(i) + h;
     }
@@ -107,6 +114,11 @@ eulerInfo get_euler_method_info(const double &h, double y0, double x0, int N)
         eulerHistory.estimated_bounded_error(i) = abs(compute_bound_error_estimate(
             h, L, max_estimated_error, eulerHistory.x(i))
         );
+        
+        eulerHistory.best_h = compute_best_h(eulerHistory.error_tolerance, 
+            max_estimated_error);
+        eulerHistory.best_N = ceil((eulerHistory.x(N) - eulerHistory.x(0))/
+            eulerHistory.best_h);
     }
 
     return eulerHistory;
@@ -208,10 +220,35 @@ void five_2_C(){
 
 }
 
+void five_2_D(){
+    //compute step size needed to get error less than error tolerance
+    double error_tolerance = 1e-4;
+    const double h = 0.2;
+    double y0 = 0.5;
+    double x0 = 0.0;
+    int N = 10; //number of iterations
+
+    eulerInfo eulerHistory = get_euler_method_info(h, y0, x0, N);    
+    eulerInfo bestEuler = get_euler_method_info(eulerHistory.best_h, y0, x0, 
+        eulerHistory.best_N);
+
+    //get maximum error in the best euler method
+    double max_error = bestEuler.local_error.maxCoeff();
+
+    std::cout << "Number of steps N: " << eulerHistory.best_N << std::endl;
+    std::cout << "optimal step size h: " << eulerHistory.best_h << std::endl;
+    std::cout << "max error: " << max_error << std::endl;
+
+}
+
 int main(){
     
-    // five_2_B();
+    five_2_B();
+    std::cout << std::endl;
     five_2_C();
+    std::cout << std::endl;
+    five_2_D();
+
 
     return 0;
 }

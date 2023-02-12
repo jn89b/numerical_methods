@@ -1,6 +1,8 @@
 #include <iostream>     // std::cout
 #include <cmath>        // std::abs
 #include <Eigen/Dense>  // Eigen::VectorXd
+#include <iomanip>
+
 /*
 
 HW 3
@@ -12,169 +14,148 @@ Example b in Chapter 5.3
 due next wednesday 
 */
 
+
+
+const double EULER = 2.71828182845904523536;
+
 typedef struct taylorInfo
 {
     int N;
-    const double h;
-    double x0;
-    double y0;
-    std::string method;
     Eigen::VectorXd x;
     Eigen::VectorXd y;
     Eigen::VectorXd local_error;
     Eigen::VectorXd true_y;
     Eigen::VectorXd bounded_error;
+    Eigen::VectorXd estimated_bounded_error;
+    const double h;
 } taylorInfo;
 
 
-const double EULER = 2.71828182845904523536;
+taylorInfo initialize_taylorinfo(const double&h, double &y0, double &x0, int &N)
+{
+    //instiantiate eulerInfo with 0 vectors
+    Eigen::VectorXd x = Eigen::VectorXd::Zero(N+1);
+    Eigen::VectorXd y = Eigen::VectorXd::Zero(N+1);
+    Eigen::VectorXd local_error = Eigen::VectorXd::Zero(N+1);
+    Eigen::VectorXd true_y = Eigen::VectorXd::Zero(N+1);
+    Eigen::VectorXd bounded_error = Eigen::VectorXd::Zero(N+1);
+    Eigen::VectorXd estimated_bounded_error = Eigen::VectorXd::Zero(N+1);
 
-double actual_function(double &x)
+    taylorInfo taylorHistory = {N, x, y, 
+    local_error, true_y, 
+    bounded_error, estimated_bounded_error, h};
+    
+    return taylorHistory;
+}
+
+
+double actual_function(double x)
 {
     return (x+1)*(x+1)-0.5*exp(x);
 }
 
-double function(double &x, double &y)
+double compute_approx_dy(double x, double y)
 {   
-    return y-pow(x,2)+1;
+    return y-(x*x)+1;
 }
 
-double dfunction (double &x, double &y)
+double compute_approx_ddy(double x, double y)
 {
-    return y - pow(x,2) -2*x + 1;
+    return compute_approx_dy(x, y) - 2*x;
 }
 
-double ddfunction (double &x, double &y)
+double compute_approx_dddy(double x, double y)
 {
-    return function(x, y) - 2*x - 2;
+    return compute_approx_ddy(x, y) - 2*x - 2;
 }
 
-double dddfunction (double &x, double &y)
+double compute_approx_ddddy(double x, double y)
 {
-    return function(x, y) - 2*x - 2;
+    return compute_approx_ddy(x, y) - 2*x - 2;
 }
 
-double compute_error(double &x, double &y)
+double compute_error(double actual_y, double y)
 {
-    return std::abs(actual_function(x) - y);
+    return abs(actual_y - y);
 }
 
-// double compute_bound_error(double &x, const double &h)
-// {
-//     return (h/2) * (0.5 * pow(EULER,2.0) - 2.0) * (pow(EULER, x) - 1.0);
-// }
 
-double compute_bound_error(double M2, double &x, const double &h)
+double compute_taylor2(const double &h, double x, double y)
 {
-    return (M2/2) * (pow(EULER, x) - 1.0) * pow(h,2);
+    return y + (h * compute_approx_dy(x, y)) 
+        + ((pow(h,2) /2) * compute_approx_ddy(x, y));
+
 }
 
-taylorInfo taylor2(const double &h, double &y0, double &x0, int &N)
+double compute_bound_error(double x)
 {
+    return 0.1 * (pow(EULER,2.0) - 2.0) * (pow(EULER, x) - 1.0) / 6.0;
+}
 
-    //store taylor info 
-    Eigen::VectorXd y(N+1);
-    Eigen::VectorXd x(N+1);
-    Eigen::VectorXd local_error(N+1);
-    Eigen::VectorXd true_y(N+1);
-    Eigen::VectorXd bounded_error(N+1);
-
-    Eigen::VectorXd ME_vector(N+1);
+double compute_bound_error_estimate(const double&h, double ME, double x)
+{
     
-    double error = 0.0;
-    double y_guess = y0;
-    double x_current = x0;
+    //get up to 2 decimal places of ME
+    // ME = round(ME * 100) / 100;
 
+    return h * ME * (pow(EULER, x) - 1.0) * pow(h,2) / (6 * 2);
+
+    // double val_round = 1e4;
+    // return round(bound_error * val_round)/ val_round;
+
+} 
+
+double compute_test(double x, double y){
+    return y - pow(x,2) - (2*x) - 1;
+}
+
+taylorInfo get_taylor2_history(const double &h, double &y0, double &x0, int &N)
+{
+    taylorInfo taylorHistory = initialize_taylorinfo(h, y0, x0, N);
+    Eigen::VectorXd estimated_error_margin = Eigen::VectorXd::Zero(N+1);
 
     for (int i = 0; i <= N; i++)
     {
-
-        x(i) = x_current;
-        y(i) = y_guess;
-        local_error(i) = error;
-        true_y(i) = actual_function(x_current);
-        // bounded_error(i) = compute_bound_error(x_current, h);
-
-        error = compute_error(x_current, y_guess);
-        y_guess = y_guess + (h * function(x_current, y_guess)) + ((pow(h,2) /2) * dfunction(x_current, y_guess));
-        x_current = x_current + h;
-
-        ME_vector(i) = ddfunction(x_current, y_guess);
-
+        taylorHistory.x(i) = x0;
+        taylorHistory.y(i) = y0;
+        taylorHistory.true_y(i) = actual_function(x0);
+        taylorHistory.local_error(i) = compute_error(taylorHistory.true_y(i), y0);
+        estimated_error_margin(i) = abs(compute_test(x0, y0));
+        y0 = compute_taylor2(h, x0, y0);
+        x0 += h;
     }
 
-    //get last value of x vector
-    double M2 = ddfunction(x(N), y(N));
-    
+    //get max error margin
+    double max_estimated_error = estimated_error_margin.maxCoeff();
+    // double max_error = compute_true_ddy();
+    double L = 1.0;
 
-    for (int i = 0; i <= N; i++)
+    for (int i=0; i<=N; i++)
     {
-        bounded_error(i) = abs(compute_bound_error(M2, x(i), h));      
-        
+        taylorHistory.estimated_bounded_error(i) = abs(compute_bound_error_estimate(h, 
+            max_estimated_error, taylorHistory.x(i)));
     }
 
-
-    taylorInfo taylor2History = {N, h, x0, y0, "taylor2", x, y, 
-        local_error, true_y, bounded_error};
-
-    std::cout<< "returning taylor2" << std::endl;
-
-    return taylor2History;
-
-}
-
-
-void taylor4(const double &h, double &y0, double &x0, int &N)
-{
-
-    double error = 0.0;
-    std::cout<<"taylor4" << std::endl;
-    std::cout<< "x" << "\t" << "y guess" << "\t" << \
-    "error" << std::endl;
-    
-    for (int i = 0; i <= N; i++)
-    {
-        //cout as table format 
-        std::cout<< x0 << "\t" << y0 << 
-        "\t" << error << std::endl; 
-        
-        error = compute_error(x0, y0);
-
-        y0 = y0 + (h * function(x0, y0)) + \
-            ((pow(h,2) /2) * dfunction(x0, y0)) + \
-            ((pow(h,3) /6) * ddfunction(x0, y0)) + \
-            ((pow(h,4) /24) * dddfunction(x0, y0));
-        
-        x0 = x0 + h;   
-    }
+    return taylorHistory;
 }
 
 
 void print_taylor(taylorInfo &taylorHistory, std::string method)
 {
     //print out the values
+    double decimal_precision = 4.0;
+    std::cout << std::setprecision(decimal_precision);
+
     std::cout<< method << std::endl;
     std::cout<< "x" << "\t" << "y guess" << "\t" << \
-    "local error" << "\t" << "bounded error" <<  std::endl;
+    "E" << "\t" << "EBE" <<  std::endl;
     
     for (int i = 0; i <= taylorHistory.N; i++)
     {
         std::cout<< taylorHistory.x(i) << "\t" << \
         taylorHistory.y(i) << "\t" << taylorHistory.local_error(i) << "\t" \ 
-        << taylorHistory.bounded_error(i) << std::endl;
+        << taylorHistory.estimated_bounded_error(i) << std::endl;
     }
-}
-
-void five_3_a(const double &h, double &y0, double &x0, int &N)
-{
-    double error = 0.0;
-    std::cout<<"five_3_b" << std::endl;
-    
-    // std::cout<< "x" << "\t" << "y guess" << "\t" << \
-    // "error" << std::endl;
-    taylorInfo taylorInfo2 = taylor2(h, y0, x0, N);
-    print_taylor(taylorInfo2, "taylor2");
-
 }
 
 int main()
@@ -184,10 +165,9 @@ int main()
     double x0 = 0.0;
     int N = 10; //number of iterations
 
-    five_3_a(h, y0, x0, N);
+    taylorInfo taylorInfo2 = get_taylor2_history(h, y0, x0, N);
+    print_taylor(taylorInfo2, "taylor2");
+    // five_3_a(h, y0, x0, N);
 
-    // taylorInfo taylorInfo2 = taylor2(h, y0, x0, N);
-
-    // print_taylor(taylorInfo2, "Hello");
 
 }
