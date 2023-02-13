@@ -2,6 +2,6 @@
 !/numerical_methods/CMakeFiles/
 
 
-**/CMAKEFiles/*
+# **/CMAKEFiles/*
 
-*.cmake
+# *.cmake

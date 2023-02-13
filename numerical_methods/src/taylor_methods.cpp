@@ -66,12 +66,12 @@ double compute_approx_ddy(double x, double y)
 
 double compute_approx_dddy(double x, double y)
 {
-    return compute_approx_ddy(x, y) - 2*x - 2;
+    return compute_approx_dy(x, y) - 2*x - 2;
 }
 
 double compute_approx_ddddy(double x, double y)
 {
-    return compute_approx_ddy(x, y) - 2*x - 2;
+    return compute_approx_dy(x, y) - 2*x - 2;
 }
 
 double compute_error(double actual_y, double y)
@@ -87,26 +87,33 @@ double compute_taylor2(const double &h, double x, double y)
 
 }
 
-double compute_bound_error(double x)
+double compute_taylor4(const double &h, double x, double y)
 {
-    return 0.1 * (pow(EULER,2.0) - 2.0) * (pow(EULER, x) - 1.0) / 6.0;
+    return y + (h * compute_approx_dy(x, y)) 
+        + ((pow(h,2) /2) * compute_approx_ddy(x, y))
+        + ((pow(h,3) /6) * compute_approx_dddy(x, y))
+        + ((pow(h,4) /24) * compute_approx_ddddy(x, y));
 }
 
-double compute_bound_error_estimate(const double&h, double ME, double x)
+double compute_bound_error(double x, double factor_number=6.0)
 {
-    
-    //get up to 2 decimal places of ME
-    // ME = round(ME * 100) / 100;
+    return 0.1 * (pow(EULER,2.0) - 2.0) * (pow(EULER, x) - 1.0) / factor_number;
+}
 
-    return h * ME * (pow(EULER, x) - 1.0) * pow(h,2) / (6 * 2);
-
-    // double val_round = 1e4;
-    // return round(bound_error * val_round)/ val_round;
-
-} 
-
-double compute_test(double x, double y){
+double compute_bound_error_estimate(const double&h, double ME, double x, 
+    double factor_number=6.0, double raise_number=2.0)
+{
+    return ME * (pow(EULER, x) - 1.0) * pow(h,raise_number) / (factor_number);
+}
+ 
+double compute_test(double x, double y)
+{
     return y - pow(x,2) - (2*x) - 1;
+}
+
+double compute_true_d5y(double x_final=2.0)
+{
+    return 0.5*pow(EULER, x_final);
 }
 
 taylorInfo get_taylor2_history(const double &h, double &y0, double &x0, int &N)
@@ -127,17 +134,53 @@ taylorInfo get_taylor2_history(const double &h, double &y0, double &x0, int &N)
 
     //get max error margin
     double max_estimated_error = estimated_error_margin.maxCoeff();
-    // double max_error = compute_true_ddy();
     double L = 1.0;
 
     for (int i=0; i<=N; i++)
     {
+        taylorHistory.bounded_error(i) = abs(compute_bound_error(taylorHistory.x(i)));
         taylorHistory.estimated_bounded_error(i) = abs(compute_bound_error_estimate(h, 
-            max_estimated_error, taylorHistory.x(i)));
+            max_estimated_error, taylorHistory.x(i), 6));
     }
 
     return taylorHistory;
 }
+
+taylorInfo get_taylor4_history(const double &h, double &y0, double &x0, int &N)
+{
+    taylorInfo taylorHistory = initialize_taylorinfo(h, y0, x0, N);
+    Eigen::VectorXd estimated_error_margin = Eigen::VectorXd::Zero(N+1);
+
+    for (int i =0; i<=N; i++)
+    {
+        taylorHistory.x(i) = x0;
+        taylorHistory.y(i) = y0;
+        taylorHistory.true_y(i) = actual_function(x0);
+        taylorHistory.local_error(i) = compute_error(taylorHistory.true_y(i), y0);
+        estimated_error_margin(i) = abs(compute_approx_ddddy(x0, y0));
+        y0 = compute_taylor4(h, x0, y0);
+        x0 += h;
+    }
+
+    //get max error margin 
+    double max_estimated_error = estimated_error_margin.maxCoeff();
+    double max_error = compute_true_d5y();
+
+    std::cout << "max error: " << max_error << std::endl;
+    std::cout << "max estimated error: " << max_estimated_error << std::endl;
+
+    for (int i=0; i<=N; i++)
+    {
+        taylorHistory.bounded_error(i) = abs(compute_bound_error_estimate(h, 
+            max_error, taylorHistory.x(i), 120.0, 4.0));
+
+        taylorHistory.estimated_bounded_error(i) = abs(compute_bound_error_estimate(h, 
+            max_estimated_error, taylorHistory.x(i), 120.0, 4.0));
+    }
+
+    return taylorHistory;
+}
+
 
 
 void print_taylor(taylorInfo &taylorHistory, std::string method)
@@ -152,10 +195,98 @@ void print_taylor(taylorInfo &taylorHistory, std::string method)
     
     for (int i = 0; i <= taylorHistory.N; i++)
     {
-        std::cout<< taylorHistory.x(i) << "\t" << \
-        taylorHistory.y(i) << "\t" << taylorHistory.local_error(i) << "\t" \ 
-        << taylorHistory.estimated_bounded_error(i) << std::endl;
+        std::cout<< taylorHistory.x(i) << "\t" << 
+        taylorHistory.y(i) << "\t" << taylorHistory.local_error(i) << "\t" <<
+        taylorHistory.estimated_bounded_error(i) << std::endl;
     }
+}
+
+void taylor_4_5_3_A()
+{
+    const double h = 0.2;
+    double y0 = 0.5;
+    double x0 = 0.0;
+    int N = 10; //number of iterations
+    taylorInfo taylorInfo4 = get_taylor4_history(h, y0, x0, N);
+    print_taylor(taylorInfo4, "taylor4");
+
+}
+
+void taylor_4_5_3_B(){
+    const double h = 0.2;
+    double y0 = 0.5;
+    double x0 = 0.0;
+    int N = 10; //number of iterations
+    taylorInfo taylorInfo4 = get_taylor4_history(h, y0, x0, N);
+    print_taylor(taylorInfo4, "taylor4");
+}
+
+
+
+Eigen::VectorXd get_other_element(const Eigen::VectorXd &vector, int element)
+{
+    int n = vector.size();
+    int m = (n-1)/ element + 1;
+
+    Eigen::VectorXd other_element(m);
+
+    for (int i = 0; i < n; i+=element)
+    {
+        other_element(i/element) = vector(i);
+    }
+
+    return other_element;
+
+}
+
+void taylor_4_5_3_C(){
+    const double h = 0.2;
+    const double h2 = 0.1;
+    const double h3 = 0.05;
+    const double h4 = 0.025;
+    
+    double decimal_precision = 4;
+
+    double y0 = 0.5;
+    double x0 = 0.0;
+    
+    int N = 10; //number of iterations
+    int N2 = 20;
+    int N3 = 40;
+    int N4 = 80;
+
+    taylorInfo taylorHistory1 = get_taylor4_history(h, y0, x0, N);
+    taylorInfo taylorHistory2 = get_taylor4_history(h2, y0, x0, N2);
+    taylorInfo taylorHistory3 = get_taylor4_history(h3, y0, x0, N3);
+    taylorInfo taylorHistory4 = get_taylor4_history(h4, y0, x0, N4);
+
+    Eigen::VectorXd other_element2 = get_other_element(
+        taylorHistory2.local_error, N2/10);
+
+    Eigen::VectorXd other_element3 = get_other_element(
+        taylorHistory3.local_error, N3/10);
+
+    Eigen::VectorXd other_element4 = get_other_element(
+        taylorHistory4.local_error, N4/10);
+
+    //divide other_element2 by other_element3
+    Eigen::VectorXd ratio1 = taylorHistory1.local_error.array() / other_element2.array(); 
+    Eigen::VectorXd ratio2 = other_element2.array() / other_element3.array();
+    Eigen::VectorXd ratio3 = other_element3.array() / other_element4.array();
+
+    std::cout << std::setprecision(decimal_precision);
+    std::cout<< "h" << "\t" << "R1" << "\t" << \ 
+    "R2" << "\t"  << "R3" << std::endl;
+
+    for (int i = 0; i <= N; i++)
+    {
+        //if i = 0 continue 
+        if (i == 0) continue;
+
+        std::cout<< taylorHistory1.x(i) << "\t"  << \
+        ratio1(i) << "\t" << ratio2(i) << "\t" << ratio3(i) << std::endl;
+    }
+
 }
 
 int main()
@@ -165,9 +296,12 @@ int main()
     double x0 = 0.0;
     int N = 10; //number of iterations
 
-    taylorInfo taylorInfo2 = get_taylor2_history(h, y0, x0, N);
-    print_taylor(taylorInfo2, "taylor2");
-    // five_3_a(h, y0, x0, N);
+    // taylorInfo taylorInfo2 = get_taylor2_history(h, y0, x0, N);
+    // print_taylor(taylorInfo2, "taylor2");
+
+    // taylor_4_5_3_A();
+    // taylor_4_5_3_B();
+    taylor_4_5_3_C();
 
 
 }
