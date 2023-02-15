@@ -14,10 +14,7 @@ Example b in Chapter 5.3
 due next wednesday 
 */
 
-
-
 const double EULER = 2.71828182845904523536;
-
 typedef struct taylorInfo
 {
     int N;
@@ -28,6 +25,10 @@ typedef struct taylorInfo
     Eigen::VectorXd bounded_error;
     Eigen::VectorXd estimated_bounded_error;
     const double h;
+    double best_h;
+    double error_tolerance = 1e-4;
+    double best_N;
+
 } taylorInfo;
 
 
@@ -76,7 +77,7 @@ double compute_approx_ddddy(double x, double y)
 
 double compute_error(double actual_y, double y)
 {
-    return abs(actual_y - y);
+    return abs(y-actual_y);
 }
 
 
@@ -116,7 +117,13 @@ double compute_true_d5y(double x_final=2.0)
     return 0.5*pow(EULER, x_final);
 }
 
-taylorInfo get_taylor2_history(const double &h, double &y0, double &x0, int &N)
+double compute_best_h(double error_tolerance, double ME, double factor_number=6.0, double order=4.0)
+{
+    return pow((error_tolerance)/((ME/factor_number) * (pow(EULER, 2.0) - 1.0)), order);
+}
+
+
+taylorInfo get_taylor2_history(const double &h, double &y0, double &x0, int N)
 {
     taylorInfo taylorHistory = initialize_taylorinfo(h, y0, x0, N);
     Eigen::VectorXd estimated_error_margin = Eigen::VectorXd::Zero(N+1);
@@ -141,12 +148,13 @@ taylorInfo get_taylor2_history(const double &h, double &y0, double &x0, int &N)
         taylorHistory.bounded_error(i) = abs(compute_bound_error(taylorHistory.x(i)));
         taylorHistory.estimated_bounded_error(i) = abs(compute_bound_error_estimate(h, 
             max_estimated_error, taylorHistory.x(i), 6));
+    
     }
 
     return taylorHistory;
 }
 
-taylorInfo get_taylor4_history(const double &h, double &y0, double &x0, int &N)
+taylorInfo get_taylor4_history(const double &h, double &y0, double &x0, int N)
 {
     taylorInfo taylorHistory = initialize_taylorinfo(h, y0, x0, N);
     Eigen::VectorXd estimated_error_margin = Eigen::VectorXd::Zero(N+1);
@@ -166,9 +174,6 @@ taylorInfo get_taylor4_history(const double &h, double &y0, double &x0, int &N)
     double max_estimated_error = estimated_error_margin.maxCoeff();
     double max_error = compute_true_d5y();
 
-    std::cout << "max error: " << max_error << std::endl;
-    std::cout << "max estimated error: " << max_estimated_error << std::endl;
-
     for (int i=0; i<=N; i++)
     {
         taylorHistory.bounded_error(i) = abs(compute_bound_error_estimate(h, 
@@ -176,6 +181,12 @@ taylorInfo get_taylor4_history(const double &h, double &y0, double &x0, int &N)
 
         taylorHistory.estimated_bounded_error(i) = abs(compute_bound_error_estimate(h, 
             max_estimated_error, taylorHistory.x(i), 120.0, 4.0));
+
+        taylorHistory.best_h = compute_best_h(taylorHistory.error_tolerance, 
+            max_estimated_error, 120.0, 1/4.0);
+
+        taylorHistory.best_N = ceil((taylorHistory.x(N) - taylorHistory.x(0)) / 
+            taylorHistory.best_h);
     }
 
     return taylorHistory;
@@ -269,6 +280,9 @@ void taylor_4_5_3_C(){
     Eigen::VectorXd other_element4 = get_other_element(
         taylorHistory4.local_error, N4/10);
 
+
+    std::cout << taylorHistory2.local_error << std::endl;
+
     //divide other_element2 by other_element3
     Eigen::VectorXd ratio1 = taylorHistory1.local_error.array() / other_element2.array(); 
     Eigen::VectorXd ratio2 = other_element2.array() / other_element3.array();
@@ -289,19 +303,47 @@ void taylor_4_5_3_C(){
 
 }
 
-int main()
+void taylor_4_5_3_D()
 {
+    //compute step size needed to get error less than error tolerance
+    double error_tolerance = 1e-4;
     const double h = 0.2;
     double y0 = 0.5;
     double x0 = 0.0;
     int N = 10; //number of iterations
 
-    // taylorInfo taylorInfo2 = get_taylor2_history(h, y0, x0, N);
-    // print_taylor(taylorInfo2, "taylor2");
+    taylorInfo taylorHistory = get_taylor4_history(h, y0, x0, N);    
+    taylorInfo bestTaylor = get_taylor4_history(taylorHistory.best_h, 
+        y0, x0, taylorHistory.best_N);
 
-    // taylor_4_5_3_A();
-    // taylor_4_5_3_B();
+    //get maximum error in the best euler method
+    double max_error = bestTaylor.local_error.maxCoeff();
+
+    std::cout << "Number of steps N: " << bestTaylor.best_N << std::endl;
+    std::cout << "optimal step size h: " << bestTaylor.best_h << std::endl;
+    std::cout << "max error: " << max_error << std::endl;
+   
+}
+
+
+int main()
+{
+    const double h = 0.1;
+    double y0 = 0.5;
+    double x0 = 0.0;
+    int N = 20; //number of iterations
+
+    taylorInfo taylorInfo4 = get_taylor4_history(h, y0, x0, N);
+    print_taylor(taylorInfo4, "taylor4");print_taylor(taylorInfo4, "taylor4");
+    taylor_4_5_3_A();
+    std::cout << std::endl;
+
+    taylor_4_5_3_B();
+    std::cout << std::endl;
+
     taylor_4_5_3_C();
-
+    std::cout << std::endl;
+    
+    taylor_4_5_3_D();
 
 }
