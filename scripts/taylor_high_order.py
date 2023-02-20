@@ -232,95 +232,97 @@ def problem_6_b():
     
     return best_n, best_error, best_h
 
-y0 = 0.5
-x0 = 0.0
-b = 2.0
-a = 0.0
-N = 10
-h = 0.2
+if __name__ == "__main__":
 
-x,r1, r2, r3 = problem_4_a()
-x = get_every_nth_element(x, 8)
-x = [round(i, 5) for i in x]
-r1 = [round(i, 5) for i in r1]
-r2 = [round(i, 5) for i in r2]
-r3 = [round(i, 5) for i in r3]
+    y0 = 0.5
+    x0 = 0.0
+    b = 2.0
+    a = 0.0
+    N = 10
+    h = 0.2
 
-# #output x, r1, r2, r3 as table to text file
-# with open("problem_4_a.txt", "w") as f:
-#     f.write("x\t r1\t r2\t r3")
-#     for i in range(len(x)+1):
+    x,r1, r2, r3 = problem_4_a()
+    x = get_every_nth_element(x, 8)
+    x = [round(i, 5) for i in x]
+    r1 = [round(i, 5) for i in r1]
+    r2 = [round(i, 5) for i in r2]
+    r3 = [round(i, 5) for i in r3]
 
-#         if i == len(x):
-#             f.write("\n")
-#             f.write("x = 2.0\t r1 = 1.0\t r2 = 1.0\t r3 = 1.0")
-#             break
+    # #output x, r1, r2, r3 as table to text file
+    # with open("problem_4_a.txt", "w") as f:
+    #     f.write("x\t r1\t r2\t r3")
+    #     for i in range(len(x)+1):
 
-#         f.write("\n")
-#         f.write(str(x[i]) + "\t" + str(r1[i]) + "\t" + \
-#             str(r2[i]) + "\t" + str(r3[i]))
+    #         if i == len(x):
+    #             f.write("\n")
+    #             f.write("x = 2.0\t r1 = 1.0\t r2 = 1.0\t r3 = 1.0")
+    #             break
 
-
-
-best_taylor2_n, best_taylor2_error, best_taylor2_h = problem_5_b()
-print("best_taylor2_n: ", best_taylor2_n)
-print("best_taylor2_error: ", best_taylor2_error)
-print("best_taylor2_h: ", best_taylor2_h)
-
-## 5_a_b_c
-x,y,actual_vals,errors,bounded_errors = problem_5_a_b()
-x = [round(i, 4) for i in x]
-y = [round(i, 4) for i in y]
-actual_vals = [round(i, 4) for i in actual_vals]
-
-#display errors in scientific notation
-errors = ["{:.2e}".format(i) for i in errors]
-bounded_errors = ["{:.2e}".format(i) for i in bounded_errors]
+    #         f.write("\n")
+    #         f.write(str(x[i]) + "\t" + str(r1[i]) + "\t" + \
+    #             str(r2[i]) + "\t" + str(r3[i]))
 
 
-# #output x, y, actual_vals, errors, bounded_errors as table to text file
-with open("problem_5_a_b_c.txt", "w") as f:
-    f.write("x\t y\t actual_vals\t errors\t bounded_errors")
-    for i in range(len(x)+1):
-            
-            if i == len(x):
-                f.write("\n")
-                f.write("x = 2.0\t y = 0.5\t actual_vals = 0.5\t errors = 0.0\t bounded_errors = 0.0")
-                break
-    
-            f.write("\n")
-            f.write(str(x[i]) + "\t" + str(y[i]) + "\t" + \
-                str(actual_vals[i]) + "\t" + str(errors[i]) + "\t" + str(bounded_errors[i]))
+
+    best_taylor2_n, best_taylor2_error, best_taylor2_h = problem_5_b()
+    print("best_taylor2_n: ", best_taylor2_n)
+    print("best_taylor2_error: ", best_taylor2_error)
+    print("best_taylor2_h: ", best_taylor2_h)
+
+    ## 5_a_b_c
+    x,y,actual_vals,errors,bounded_errors = problem_5_a_b()
+    x = [round(i, 4) for i in x]
+    y = [round(i, 4) for i in y]
+    actual_vals = [round(i, 4) for i in actual_vals]
+
+    #display errors in scientific notation
+    errors = ["{:.2e}".format(i) for i in errors]
+    bounded_errors = ["{:.2e}".format(i) for i in bounded_errors]
 
 
-test,r1, r2, r3 = problem_6_a()
-decimal_precision = 4
-
-x = [round(i, decimal_precision) for i in x]
-r1 = [round(i, decimal_precision) for i in r1]
-r2 = [round(i, decimal_precision) for i in r2]
-r3 = [round(i, decimal_precision) for i in r3]
-
-# #output x, r1, r2, r3 as table to text file
-# with open("problem_6_a.txt", "w") as f:
-#     f.write("x\t r1\t r2\t r3")
-#     for i in range(len(x)):
+    # #output x, y, actual_vals, errors, bounded_errors as table to text file
+    with open("problem_5_a_b_c.txt", "w") as f:
+        f.write("x\t y\t actual_vals\t errors\t bounded_errors")
+        for i in range(len(x)+1):
+                
+                if i == len(x):
+                    f.write("\n")
+                    f.write("x = 2.0\t y = 0.5\t actual_vals = 0.5\t errors = 0.0\t bounded_errors = 0.0")
+                    break
         
-#         if i == len(x):
-#             f.write("\n")
-#             f.write("x = 2.0\t r1 = 1.0\t r2 = 1.0\t r3 = 1.0")
-#             break
-#         else:
-#             f.write("\n")
-#             f.write(str(x[i]) + "\t" + str(r1[i]) + "\t" + \
-#                 str(r2[i]) + "\t" + str(r3[i]))
+                f.write("\n")
+                f.write(str(x[i]) + "\t" + str(y[i]) + "\t" + \
+                    str(actual_vals[i]) + "\t" + str(errors[i]) + "\t" + str(bounded_errors[i]))
+
+
+    test,r1, r2, r3 = problem_6_a()
+    decimal_precision = 4
+
+    x = [round(i, decimal_precision) for i in x]
+    r1 = [round(i, decimal_precision) for i in r1]
+    r2 = [round(i, decimal_precision) for i in r2]
+    r3 = [round(i, decimal_precision) for i in r3]
+
+    # #output x, r1, r2, r3 as table to text file
+    # with open("problem_6_a.txt", "w") as f:
+    #     f.write("x\t r1\t r2\t r3")
+    #     for i in range(len(x)):
+            
+    #         if i == len(x):
+    #             f.write("\n")
+    #             f.write("x = 2.0\t r1 = 1.0\t r2 = 1.0\t r3 = 1.0")
+    #             break
+    #         else:
+    #             f.write("\n")
+    #             f.write(str(x[i]) + "\t" + str(r1[i]) + "\t" + \
+    #                 str(r2[i]) + "\t" + str(r3[i]))
 
 
 
-best_n, best_error, best_h = problem_6_b()
+    best_n, best_error, best_h = problem_6_b()
 
-print("best_n: ", best_n)
-print("best_error: ", best_error)
-print("best_h: ", best_h)
+    print("best_n: ", best_n)
+    print("best_error: ", best_error)
+    print("best_h: ", best_h)
 
 
