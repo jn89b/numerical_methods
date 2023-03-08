@@ -12,7 +12,6 @@ approx_ddddy = lambda x, y: approx_function(x, y) - 2*x - 2
 EULER_NUMBER = 2.71828182845904523536
 
 
-
 def compute_bound_error_estimate(h:float, ME:float,
     x:float, factor_number:float, raise_number:float):
 

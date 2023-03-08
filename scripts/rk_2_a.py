@@ -30,7 +30,9 @@ T1   R1     R2    R3
 """
 
 actual_function = lambda x: (x+1)*(x+1) - 0.5*m.exp(x)
-function = lambda x, y: y - x**2 + 1
+function = lambda x, y: y - x**2 + 1 
+
+another_function = lambda x, y: (2*x*y)/(x**2 - y**2)
 
 def RK2(a:float, b:float, N:int, x0: float, y0: float):
     """Computes RK2 for a given function"""
@@ -51,7 +53,8 @@ def RK2(a:float, b:float, N:int, x0: float, y0: float):
         actual_vals[i+1] = actual_function(x[i+1])
     return x, y, actual_vals
 
-def RK4(a:float, b:float, N:int, x0:float, y0:float, actual_function=actual_function,
+def RK4(a:float, b:float, N:int, x0:float, y0:float, 
+    actual_function=actual_function,
     function=function):
     """Computes RK4 for a given function"""
     x = np.zeros(N+1)
@@ -71,7 +74,12 @@ def RK4(a:float, b:float, N:int, x0:float, y0:float, actual_function=actual_func
         s2 = function(x[i] + h/2, y[i] + (h*s1)/2)
         s3 = function(x[i] + h/2, y[i] + (h*s2)/2)
         s4 = function(x[i] + h, y[i] + h*s3)
+
+        #print in high precision
+        print("s1 = ", s1, "s2 = ", s2, "s3 = ", s3, "s4 = ", s4)
+        
         y[i+1] = y[i] + (h*(s1 + 2*s2 + 2*s3 + s4)/6)
+        print(y[i+1])
         actual_vals[i+1] = actual_function(x[i+1])
 
     return x, y, actual_vals
@@ -84,9 +92,21 @@ def R_K2_A():
     N = 10
 
     x, y, actual_vals = RK2(a, b, N, a, ad)
+    error = y - actual_vals
     print("RK2A")
+    print("x\t y\t actual\t error")
+
     for i in range(N+1):
-        print("x = ", x[i], "y = ", y[i], "actual = ", actual_vals[i])
+
+        #keep 4 decimal places
+        x[i] = round(x[i], 2)
+        y[i] = round(y[i], 4)
+        actual_vals[i] = round(actual_vals[i], 4)
+        error[i] = round(error[i], 4)
+
+        print(x[i], "\t", y[i], "\t", actual_vals[i], "\t", error[i])
+
+
 
 def RK4_A():
     """RK4A Due Next Wednesday """
@@ -96,11 +116,26 @@ def RK4_A():
     N = 10
 
     x, y, actual_vals = RK4(a, b, N, a, ad)
-    print("RK4A")
+    error = y - actual_vals
 
-    #print in table format
+    # #print in table format
+    # for i in range(N+1):
+    #     print("x = ", x[i], "y = ", y[i], "actual = ", actual_vals[i])
+    print("RK4A")
+    print("x\t y\t actual\t error")
+
     for i in range(N+1):
-        print("x = ", x[i], "y = ", y[i], "actual = ", actual_vals[i])
+
+        #keep 4 decimal places
+        x[i] = round(x[i], 2)
+        y[i] = round(y[i], 4)
+        actual_vals[i] = round(actual_vals[i], 4)
+
+        #error scientific notation
+        error[i] = round(error[i], 8)
+        #error[i] = round(error[i], 4)
+
+        print(x[i], "\t", y[i], "\t", actual_vals[i], "\t", error[i])
 
 
 def RK2_B():
@@ -114,7 +149,6 @@ def RK2_B():
 
     x_list = []
     y_list = []
-    #bounded_errors_list = []
     errors_list = []
 
     for h, N in zip(h_list, N_list):
@@ -122,7 +156,6 @@ def RK2_B():
         errors = taylor_high_order.compute_error(y, actual_vals)
         x_list.append(x)
         y_list.append(y)
-        #bounded_errors_list.append(bounded_errors)
         errors_list.append(errors)
 
     #compute error ratios 
@@ -144,7 +177,29 @@ def RK2_B():
     r1 = 1/r1
     r2 = 1/r2
     r3 = 1/r3
+    print("x = ", x_list[0])
+    #print in table format
+    x_list = x_list[0][1:]
+    y_list = y_list[0][1:]
+    # errors_list = errors_list[:][1:]
     
+    print("h\t x\t y\t r1\t r2\t r3")
+    for i in range(len(r1)):
+        h_list[0] = round(h_list[0], 2)
+        
+        #round x_list to 2 decimal places
+        x_list[i] = round(x_list[i], 2)
+        y_list[i] = round(y_list[i], 4)
+        # y_list[0][i] = round(y_list[i], 4)
+        actual_vals[i] = round(actual_vals[i], 4)
+        errors_list[0][i] = round(errors_list[0][i], 4)
+        r1[i] = round(r1[i], 4)
+        r2[i] = round(r2[i], 4)
+        r3[i] = round(r3[i], 4)
+
+        print(h_list[0], "\t", x_list[i], "\t", y_list[i], 
+        "\t", r1[i], "\t", r2[i], "\t", r3[i])
+
     return x, r1, r2, r3
 
 
@@ -185,19 +240,53 @@ def RK4_B():
     r2 = np.divide(error_2, error_3)
     r3 = np.divide(error_3, error_4)
 
-    #need to invert r1, r2, r3
-    # r1 = 1/r1
-    # r2 = 1/r2
-    # r3 = 1/r3
+    x_list = x_list[0][1:]
+    y_list = y_list[0][1:]
+    # errors_list = errors_list[:][1:]
     
+    print("h\t x\t y\t r1\t r2\t r3")
+    for i in range(len(r1)):
+        h_list[0] = round(h_list[0], 2)
+        
+        #round x_list to 2 decimal places
+        x_list[i] = round(x_list[i], 2)
+        y_list[i] = round(y_list[i], 4)
+        # y_list[0][i] = round(y_list[i], 4)
+        actual_vals[i] = round(actual_vals[i], 4)
+        errors_list[0][i] = round(errors_list[0][i], 4)
+        r1[i] = round(r1[i], 4)
+        r2[i] = round(r2[i], 4)
+        r3[i] = round(r3[i], 4)
+
+        print(h_list[0], "\t", x_list[i], "\t", y_list[i], 
+        "\t", r1[i], "\t", r2[i], "\t", r3[i])
+
     return x, r1, r2, r3
+
+
+def Problem10A():
+    """Compute the RK4 method"""
+    x1,w1, y1 = RK4(a=0, b=2, N=20, x0=0, y0=3, function=another_function)
+    x2,w2, y2 = RK4(a=0, b=2, N=40, x0=0, y0=3, function=another_function)
+    x3,w3, y3 = RK4(a=0, b=2, N=80, x0=0, y0=3, function=another_function)
+
+    print("w1", w1[-1])
+    print("w2", w2[-1])
+    print("w3", w3[-1])
 
 if __name__ =="__main__":
     # R_K2_A()
-    x, r1, r2, r3 = RK2_B()
+    # x, r1, r2, r3 = RK2_B()
 
-    x4, r14, r24, r34 = RK4_B()
+    # RK4_A()
+    # x4, r14, r24, r34 = RK4_B()
 
-
+    a = 0 
+    b = 0.2
+    y0 = 0.5
+    N = 1
+    
+    Problem10A()
+        
 
     
