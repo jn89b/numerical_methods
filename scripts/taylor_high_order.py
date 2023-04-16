@@ -22,8 +22,6 @@ def compute_best_h(error_tol:float, ME:float,
 
     return ((error_tol * factor_number) / (ME * (EULER_NUMBER**(x) - 1)))**(1/raise_number)
 
-
-
 def taylor_method4(a:float, b:float, N:int, 
     x0:float, y0:float, h=None, compute_bound_error=False,
     find_best_h=False, order=4):
@@ -315,8 +313,6 @@ if __name__ == "__main__":
     #             f.write("\n")
     #             f.write(str(x[i]) + "\t" + str(r1[i]) + "\t" + \
     #                 str(r2[i]) + "\t" + str(r3[i]))
-
-
 
     best_n, best_error, best_h = problem_6_b()
 

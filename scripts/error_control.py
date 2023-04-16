@@ -42,7 +42,6 @@ n_3 = 3E3
 chemical_function = lambda x,y:\
     k*(n_1-y/2)**2*(n_2-(y/2))**2*(n_3-(3*y/4))**3
 
-
 def RK4(a:float, b:float, N:int, x0:float, y0:float, 
     actual_function=some_function,
     function=some_function,
@@ -56,8 +55,7 @@ def RK4(a:float, b:float, N:int, x0:float, y0:float,
     else:
         y = np.zeros(N+1)
         actual_vals = np.zeros(N+1)
-    
-
+        
     x = np.zeros(N+1)
 
     x[0] = x0
@@ -204,8 +202,8 @@ def AdaptiveRK(a,b,w, tol,
         
         w3 = (16*w2[-1]- w1[-1])/15
         error = abs(w3 - w1[-1])
-
         if error < tol:
+            print("t = ", t, "w = ", w3, "h = ", h)
             w = w3
             t = t + h
             T.append(t)

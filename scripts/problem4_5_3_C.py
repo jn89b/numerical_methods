@@ -53,12 +53,13 @@ def problem4_5_3_C():
 
     #create dataframe for table
     df = pd.DataFrame({'x':x, 'w':w, 'error':error, 'r1':r1, 'r2':r2, 'r3':r3})
-    df = df.round(4)
-
     return df
+
 
 df = problem4_5_3_C()
 print(df)
+
+
 
 
 
