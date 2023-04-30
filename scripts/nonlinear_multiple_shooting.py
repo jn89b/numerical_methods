@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 true_function = lambda x : x**2 + (16/x)
@@ -102,12 +103,12 @@ def AdaptiveRKVector(a,b,w,tol,condition=1):
 
 def Problem17a():
     """
-    RK_VEC_VAR_11_2_A
+    RK_VEC_VAR_11_1_A
     """
     a = 1 
     b = 3 
     alpha = 17
-    beta = 43/3
+    beta = 43/35
     s_current  = (beta-alpha)/(b-a)
     tol = 10E-4
     w = np.array([alpha,s_current,0,1])
@@ -173,6 +174,8 @@ def Problem17a():
 
     info_df = pd.DataFrame(info_dict)
     print(info_df)
+    
+    return final_answer_dict
 
 def Problem17B():
     """
@@ -219,13 +222,13 @@ def Problem17B():
         g[i+1] = g_current
         i = i + 1
         
-    final_answer_dict = {
+    answer_dict = {
         'g': g,
         's': s,
     }
 
-    final_answer_df = pd.DataFrame(final_answer_dict)
-    print(final_answer_df)
+    answer_df = pd.DataFrame(answer_dict)
+    print("final answer",answer_df)
 
     true_list = []
     error_list = []
@@ -247,11 +250,190 @@ def Problem17B():
 
     info_df = pd.DataFrame(info_dict)
     print(info_df)
+
+    return answer_df
+
+def Problem18A():
+    """
+    RK_VEC_VAR_11_2_A
+    """
+    a = 1 
+    b = 3 
+    alpha = 17
+    beta = 43/3
+    s_current  = (beta-alpha)/(b-a)
+    tol = 10E-4
+    w = np.array([alpha,s_current,0,1])
+    T,W,H = AdaptiveRKVector(a,b,w,tol,condition=1)
+
+    W = np.array(W)
+    W1 = W[:,0]
+    W3 = W[:,2]
+
+    g = np.zeros(len(W1))
+    s = np.zeros(len(W1))
+
+    g_current = W1[-1] - beta
+    g[0] = g_current
+    s[0] = s_current
+
+    i = 0 
+    while abs(g_current) > 10E-8:
+         
+        if i > 10:
+            print("The method has failed to converge")
+            break
+         
+        s_current = -20 + (0.1) * (i-1)#s[i] - ((W1[-1] - beta)/ W3[-1]) 
+        print(s_current)
+        s[i+1] = s_current
         
+        w = np.array([alpha,s_current,0,1])
+        T,W,H = AdaptiveRKVector(a,b,w,tol,condition=1)
+        W = np.array(W)
+        W1 = W[:,0]
+        W3 = W[:,2]
+
+        g_current = W1[-1] - beta
+        g[i+1] = g_current
+        i = i + 1
+        
+    final_answer_dict = {
+        's': s,
+        'g': g,
+    }
+
+    true_list = []
+    error_list = []
+    
+    for t,w in zip(T,W1):
+        
+        true_val = true_function(t)
+        true_list.append(true_val)
+
+        error = abs(true_val - w)
+        error_list.append(error)
+
+    final_answer_df = pd.DataFrame(final_answer_dict)
+    print("final answer", final_answer_df)
+
+    info_dict = {
+        'T': T,
+        'H': H,
+        'W1': W1,
+        'true': true_list,
+        'error': error_list,
+    }
+
+    info_df = pd.DataFrame(info_dict)
+    print(info_df)
+    
+    return final_answer_dict
+    
 if __name__=='__main__':
     
     set_pandas_display_options()
-    Problem17a()
+    seventeen_dict = Problem17a()
     print('\n')
-    Problem17B()
+    seventeen_dict_b = Problem17B()
+    print('\n')
+    # solution = Problem18A()
+    #%% 
+    """
+    RK_VEC_VAR_11_2_A
+    """
+    a = 1 
+    b = 3 
+    alpha = 17
+    beta = 43/3
+    s_current  = -20#(beta-alpha)/(b-a)
+    tol = 10E-4
+    w = np.array([alpha,s_current,0,1])
+    T,W,H = AdaptiveRKVector(a,b,w,tol,condition=1)
 
+
+    W = np.array(W)
+    W1 = W[:,0]
+    W3 = W[:,2]
+
+    n = 300
+    g = np.zeros(n+1)
+    s = np.zeros(n+1)
+    # g = np.zeros(len(W1))
+    # s = np.zeros(len(W1))
+
+    g_current = W1[-1] - beta
+    g[0] = g_current
+    s[0] = s_current
+
+    i = 0 
+    while abs(g_current) > 10E-8:
+         
+        if i >= n:
+            print("The method has failed to converge")
+            break
+         
+        s_current = -20 + (0.1) * (i)#s[i] - ((W1[-1] - beta)/ W3[-1]) 
+        # s_current = s[i] - ((W1[-1] - beta)/ W3[-1]) #-20 + (0.1) * (i-1)
+        print(-20 + (0.1) * (i-1))#s[i] - ((W1[-1] - beta)/ W3[-1]) 
+
+        s[i+1] = s_current 
+        
+        w = np.array([alpha,s_current,0,1])
+        T,W,H = AdaptiveRKVector(a,b,w,tol,condition=1)
+        W = np.array(W)
+        W1 = W[:,0]
+        W3 = W[:,2]
+
+        g_current = W1[-1] - beta
+        g[i+1] = g_current
+        i = i + 1
+        
+    final_answer_dict = {
+        's': s,
+        'g': g,
+    }
+
+    true_list = []
+    error_list = []
+    
+    for t,w in zip(T,W1):
+        
+        true_val = true_function(t)
+        true_list.append(true_val)
+
+        error = abs(true_val - w)
+        error_list.append(error)
+
+    final_answer_df = pd.DataFrame(final_answer_dict)
+    print(final_answer_df)
+
+    info_dict = {
+        'T': T,
+        'H': H,
+        'W1': W1,
+        'true': true_list,
+        'error': error_list,
+    }
+
+    info_df = pd.DataFrame(info_dict)
+    print(info_df)
+
+    plt.close('all')
+    plt.plot(s,g, '-')
+    #plot horizontal line at y = 0
+    plt.axhline(y=0, color='r', linestyle='-')
+    plt.scatter(seventeen_dict_b['s'], seventeen_dict_b['g'])
+    plt.xlabel('s')
+    plt.show()
+    
+    s_list = []
+    g_list = []
+    for i in range(30):
+        s_val = -20 + (0.1)*(i-1)
+        g_val = (s_val)
+        
+        s_list.append(s_val)
+        g_list.append(g_val)
+        
+        
