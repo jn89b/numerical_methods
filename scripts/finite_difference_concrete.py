@@ -96,8 +96,8 @@ def finite_diff_method(aa,bb,alpha,beta,n):
 if __name__ == "__main__":
     aa = 1 
     bb = 3
-    alpha = 1
-    beta = 3
+    a = 17
+    b = 43/35
     n = 20
     x_list,w = finite_diff_method(aa,bb,alpha,beta,n)
 
@@ -113,6 +113,3 @@ if __name__ == "__main__":
 
     df = pd.DataFrame(dict_info)
     set_pandas_display_options()
-    print(df)
-
-    print(w)
