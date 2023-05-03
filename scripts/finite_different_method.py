@@ -96,7 +96,6 @@ def problem19():
         y_list.append(true_val)
         error_val = abs(true_val - estimated)
         error_list.append(error_val)
-        #print(true_function(val))f
 
     # x_list = x.tolist()
     w_info = w.tolist()
