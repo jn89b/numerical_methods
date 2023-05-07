@@ -30,7 +30,7 @@ while max_Fw > tolerance
         break
     end
 
-    [c,d,e] = J(W,alpha,beta,h);
+    [c,d,e] = J(X,W,alpha,beta,h);
     P = tridiag(c,d,e,-Fw);
     W = W + P;
     Fw = compute_F(X,W,alpha,beta,h);
@@ -51,39 +51,52 @@ function true_val = compute_true_function(x)
     true_val = x.^2 + (16./x);
 end
 
+function f = compute_function(x,y,yprime)
+    f = 4 + (1/4)*x^3 - y*yprime/8;
+end
+
+function fy = compute_dfunction(x,y,yprime)
+    fy = -yprime/8;
+end
+
+function fyy = compute_ddfunction(x,y,yprime)
+    fyy = -y/8;
+end
+
 function Fw = compute_F(X,W,alpha,beta,h)
     n = length(X);
     Fw = zeros(n,1);
     
-    dy1 = (W(2)-alpha)/(16*h);
-    Fw(1) = -alpha + (2*W(1)) - W(2) + h^2*(4+0.25*X(1)^3-W(1)*dy1);
+    dy1 = (W(2)-alpha)/(2*h);
+    Fw(1) = -alpha + (2*W(1)) - W(2) + h^2*compute_function(X(1),W(1), dy1);
     
     for i = 2:n-1
-        dyi = (W(i+1)-W(i-1))/(16*h);
-        Fw(i) = -W(i-1) + (2*W(i)) - W(i+1) + h^2*(4+(1/4)*X(i)^3-W(i)*dyi);
+        dyi = (W(i+1)-W(i-1))/(2*h);
+        Fw(i) = -W(i-1) + (2*W(i)) - W(i+1) + h^2*compute_function(X(i),W(i), dyi);
     end
     
-    dyn = (beta-W(n-1))/(16*h);
-    Fw(n) = -W(n-1) + (2*W(n)) - beta + h^2*(4+(1/4)*X(n)^3-W(n)*dyn);
+    dyn = (beta-W(n-1))/(2*h);
+    Fw(n) = -W(n-1) + (2*W(n)) - beta + h^2*compute_function(X(n),W(n), dyn);
     
 end
 
-function [c,d,e] = J(W,alpha,beta,h)
+function [c,d,e] = J(X,W,alpha,beta,h)
     n = length(W);
     c = zeros(n,1);
     d = zeros(n,1);
     e = zeros(n,1);
     
-    d(1) = 2 - (h/16) * (W(2)-alpha);
-    e(1) = -1 - h * (W(1)/16);
+    d(1) = 2 + h^2 * compute_dfunction(X(1), W(1), (W(2)-alpha)/(2*h));
+    e(1) = -1 + h^2 * compute_ddfunction(X(1), W(1), (W(2)-alpha)/(2*h)) * (1/(2*h));
+    
     for i = 2:n-1
-        c(i) = -1 + h * (W(i)/16);
-        d(i) = 2 - (h/16) * (W(i+1)-W(i-1));
-        e(i) = -1 - h * (W(i)/16);
+        c(i) = -1 + h^2 * compute_ddfunction(X(i), W(i), (W(i+1)-W(i-1))/(2*h)) * (-1/(2*h));
+        d(i) = 2 + h^2 * compute_dfunction(X(i), W(i), (W(i+1)-W(i-1))/(2*h));
+        e(i) = -1 + h^2 * compute_ddfunction(X(i), W(i), (W(i+1)-W(i-1))/(2*h)) * (1/(2*h));
     end
 
-    c(n) = -1 + h * (W(n)/16);
-    d(n) = 2 - (h/16) * (beta-W(n-1));
+    c(n) = -1 + h^2 * compute_ddfunction(X(n), W(n), (beta-W(n-1))/(2*h)) * (-1/(2*h));
+    d(n) = 2 + h^2 * compute_dfunction(X(n), W(n), (beta-W(n-1))/(2*h));
 end
 
 function W = tridiag(c,d,e,b)
