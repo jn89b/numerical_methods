@@ -31,7 +31,7 @@ while max_Fw > tolerance
     end
 
     [c,d,e] = J(X,W,alpha,beta,h);
-    P = tridiag(c,d,e,-Fw);
+    P = compute_gaussian_triadiag(c,d,e,-Fw);
     W = W + P;
     Fw = compute_F(X,W,alpha,beta,h);
     max_Fw = max(abs(Fw));
@@ -99,7 +99,7 @@ function [c,d,e] = J(X,W,alpha,beta,h)
     d(n) = 2 + h^2 * compute_dfunction(X(n), W(n), (beta-W(n-1))/(2*h));
 end
 
-function W = tridiag(c,d,e,b)
+function W = compute_gaussian_triadiag(c,d,e,b)
     n = length(d);
     W = zeros(n,1);
     for k = 2:n
