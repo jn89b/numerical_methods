@@ -1,75 +1,74 @@
- % Finite difference method 
- % Approximate the solution of y"=(-2/x)y'+(2/x^2)y+ sin(lnx)/x^2
- % for 1<=x<=2 with y(1)=1 and y(2)=2.
+clear
+clc
+close all
+ % Nonlinear shooting method
+ % Approximate the solution of y''=(32+2x^3-yy')/8 
+ % for 1<=x<=3 with y(1)=17 and y(3)=43/3
  
- p = @(x) (-2/x);  
- q = @(x) (2/x^2);
- r = @(x) (sin(log(x))/x^2);
- 
-c2 = -0.0392070132
-c1 = 1.1392070132
-true_function = @(x) (c1*x) + (c2/(x^2)) ... 
-    - ((0.3)*sin(log(x))) ...
-    - ((0.1)*cos(log(x))) 
- 
- aa = 1; bb = 2; alpha = 1; beta = 2; n=9;      % h = (bb-aa)/(n+1);   h=0.1
-  
- fprintf('   x           w   \n');
- h = (bb-aa)/(n+1);
- a = zeros(1,n+1);
- b = zeros(1,n+1);
- c = zeros(1,n+1);
- d = zeros(1,n+1);
- l = zeros(1,n+1);
- u = zeros(1,n+1);
- z = zeros(1,n+1);
- w = zeros(1,n+1);
- x = aa+h;
- a(1) = 2+h^2*q(x);
- b(1) = -1+0.5*h*p(x);
- d(1) = -h^2*r(x)+(1+0.5*h*p(x))*alpha;
- m = n-1;
- 
- for i = 2 : m 
-   x = aa+i*h;
-   a(i) = 2+h^2*q(x);
-   b(i) = -1+0.5*h*p(x);
-   c(i) = -1-0.5*h*p(x);
-   d(i) = -h^2*r(x);
- end
- 
- x = bb-h;
- a(n) = 2+h^2*q(x);
- c(n) = -1-0.5*h*p(x);
- d(n) = -h^2*r(x)+(1-0.5*h*p(x))*beta;
- l(1) = a(1);
- u(1) = b(1)/a(1);
- z(1) = d(1)/l(1);
- 
- for i = 2 : m 
-   l(i) = a(i)-c(i)*u(i-1);
-   u(i) = b(i)/l(i);
-   z(i) = (d(i)-c(i)*z(i-1))/l(i);
- end
- 
- l(n) = a(n)-c(n)*u(n-1);
- z(n) = (d(n)-c(n)*z(n-1))/l(n);
- w(n) = z(n);
+ f = @(x,y,z) 0.5*(1 - (z)^2 - (y*sin(x)));
+ fy = @(x,y,z) 0.5*sin(x);
+ fz = @(x,y,z) -z;
 
- for j = 1 : m 
-   i = n-j;
-   w(i) = z(i)-u(i)*w(i+1);
- end
- i = 0;
- fprintf('%5.4f    %11.8f\n', aa, alpha);
- for i = 1 : n
-   x = aa+i*h;
-   true_val = true_function(x);
-   error = abs(true_val - w(i));
-   fprintf('%5.4f    %11.8f %11.8f  11.8f ' , x, w(i), true_val, error);
-   true
- end
- i = n+1;
- fprintf('%5.4f    %11.8f\n', bb, beta);
+ a=0; b=pi; 
+ alpha =2; 
+ beta =2; 
+ tol=10^(-6); 
+ n=25; 
+ m=10;
  
- 
+ tk = (beta-alpha)/(b-a); 
+ fprintf('Nonlinear shooting method\n\n');
+ fprintf('      x(i)           w(i)\n');
+ w1 = zeros(1,n+1);
+ w2 = zeros(1,n+1);
+ h = (b-a)/n;
+ k = 1;
+
+ while k <= m  
+ w1(1) = alpha;
+ w2(1) = tk;
+ u1 = 0 ;
+ u2 = beta;
+
+ for i = 1 : n 
+   x = a+(i-1)*h;
+   t = x+0.5*h;
+   k11 = h*w2(i);
+   k12 = h*f(x,w1(i),w2(i));
+   k21 = h*(w2(i)+0.5*k12);
+   k22 = h*f(t,w1(i)+0.5*k11,w2(i)+0.5*k12);
+   k31 = h*(w2(i)+0.5*k22);
+   k32 = h*f(t,w1(i)+0.5*k21,w2(i)+0.5*k22);
+   k41 = h*(w2(i)+k32);
+   k42 = h*f(x+h,w1(i)+k31,w2(i)+k32);
+   w1(i+1) = w1(i)+(k11+2*(k21+k31)+k41)/6;
+   w2(i+1) = w2(i)+(k12+2*(k22+k32)+k42)/6;
+   k11 = h*u2;
+   k12 = h*(fy(x,w1(i),w2(i))*u1+fz(x,w1(i),w2(i))*u2);
+   k21 = h*(u2+0.5*k12);
+   k22 = h*(fy(t,w1(i),w2(i))*(u1+0.5*k11)+fz(t,w1(i),w2(i))*(u2+0.5*k21));
+   k31 = h*(u2+0.5*k22);
+   k32 = h*(fy(t,w1(i),w2(i))*(u1+0.5*k21)+fz(t,w1(i),w2(i))*(u2+0.5*k22));
+   k41 = h*(u2+k32);
+   k42 = h*(fy(x+h,w1(i),w2(i))*(u1+k31)+fz(x+h,w1(i),w2(i))*(u2+k32));
+   u1 = u1+(k11+2*(k21+k31)+k41)/6;
+   u2 = u2+(k12+2*(k22+k32)+k42)/6;
+ end
+
+   if abs(w1(n+1)-beta) < tol 
+      i = 0;
+      fprintf('  %11.8f     %11.8f\n', a, alpha);
+      for i = 1 : n 
+        j = i+1;
+        x = a+i*h;
+        fprintf('  %11.8f     %11.8f\n', x, w1(j));
+      end
+     fprintf('\nConvergence in %d iterations t=%11.7f \n\n', k, tk);
+     break;
+   else
+     tk = tk-(w1(n+1)-beta)/u1;
+     k = k+1;
+   end
+ end
+% nonlinear_shooting.m
+% Displaying nonlinear_shooting.m.

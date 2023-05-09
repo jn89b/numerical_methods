@@ -41,22 +41,12 @@ X       H       YA
 2      0.1       2             2         8.8818E-16         
 
 """
-#u1,u2,u3,u4
-# a = 1
-# b = 2
-# alpha = 1
-# beta = 2 #
-# w = np.array([alpha, 0, 0, 1])
+p = lambda x : -4/x
+q = lambda x : -(2 / x**2)
+r = lambda x : (2*np.log(x))/(x**2)
 
-p = lambda x : -2/x
-q = lambda x : (2 / x**2)
-r = lambda x : (np.sin(np.log(x)))/(x**2)
-
-c2 = -0.0392070132
-c1 = 1.1392070132
-true_function = lambda x : (c1*x) + (c2/(x**2)) \
-    - ((0.3)*np.sin(np.log(x))) \
-    - ((0.1)*np.cos(np.log(x)))  
+true_function = lambda x : (4/x) - (2/(x**2)) \
+    + np.log(x) - (3/2)
 
 def set_pandas_display_options() -> None:
     """Set pandas display options."""
@@ -157,12 +147,16 @@ def AdaptiveRKVector(a,b,w,tol,condition=1):
 
     return T,W,H
 
-def sixteenB():
+def final_5B():
     a = 1
     b = 2
     N = 10
+    
+    alpha = 0.5
+    beta = np.log(2)
+    
     h = (b-a)/N
-    w = np.array([a, 0, 0, 1])
+    w = np.array([alpha, 0, 0, beta])
 
     T,W = RK4Vector(a,b,w,N)
     error = []
@@ -170,7 +164,7 @@ def sixteenB():
     h_list = []
     x_list = []
     w1_list = []
-    z = (b - W[-1][0]) / (W[-1][2])
+    z = (beta - W[-1][0]) / (W[-1][2])
 
     for i in range(len(T)):
 
@@ -201,13 +195,12 @@ def sixteenA():
     tol = 10E-5
     N = 10
     h = (b-a)/N
-    w = np.array([a, 0, 0, b])
+    w = np.array([a, 0, 0, 1])
 
     T,W,H = AdaptiveRKVector(a,b,w,tol,condition=1)
 
     error = []
     true_val = []
-    h_list = []
     x_list = []
     w1_list = []
     z = (b - W[-1][0]) / (W[-1][2])
@@ -218,6 +211,49 @@ def sixteenA():
         w2 = W[i][1] + (z*W[i][3])
 
         w1_list.append(w1)        
+        x_list.append(X)
+        h_list.append(h)
+        true_val.append(true_function(X))
+        error.append(abs(true_function(X) - w1))
+        
+    info_dict = {
+        'x': x_list,
+        'h': h_list,
+        'true_val': true_val,
+        'w1': w1_list,
+        'error': error
+    }
+    df = pd.DataFrame(info_dict)
+    print(df)
+
+def final_5A():
+    a = 1
+    b = 2
+    tol = 10E-5
+    N = 10
+    h = (b-a)/N
+    
+    alpha = 0.5
+    beta = np.log(2)
+    w = np.array([alpha, 0, 0, beta])
+    
+    T,W,H = AdaptiveRKVector(a,b,w,tol)
+
+    error = []
+    true_val = []
+    h_list = []
+    x_list = []
+    w1_list = []
+    w2_list = []    
+    z = (beta - W[-1][0]) / (W[-1][2])
+
+    for i in range(len(T)):
+        X = T[i]#a+(i*H[i])
+        w1 = W[i][0] + (z*W[i][2])
+        w2 = W[i][1] + (z*W[i][3])
+        
+        w1_list.append(w1)
+        w2_list.append(w2)        
         x_list.append(X)
         h_list.append(H[i])
         true_val.append(true_function(X))
@@ -236,5 +272,9 @@ def sixteenA():
 
 if __name__=='__main__':
     set_pandas_display_options()
-    sixteenA()
-    sixteenB()
+
+    final_5A()
+    final_5B()
+
+
+

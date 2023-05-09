@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-
+import math 
 p = lambda x : 2
 q = lambda x : -1
 r = lambda x : x*np.exp(x) - x
@@ -8,8 +8,7 @@ r = lambda x : x*np.exp(x) - x
 
 # c2 = -0.0392070132
 # c1 = 1.1392070132
-true_function = lambda x : x**3*np.exp(x)/6 \
-    - 5*x*np.exp(x)/3 - x - 2
+true_function = lambda x : x**3*np.exp(x)/6 - 5*x*np.exp(x)/3 + (np.exp(x)*2)- x - 2
 
 
 def set_pandas_display_options() -> None:
@@ -17,7 +16,7 @@ def set_pandas_display_options() -> None:
     # Ref: https://stackoverflow.com/a/52432757/
     display = pd.options.display
 
-    display.max_columns = 1000
+    display.max_columns = 10000
     display.max_rows = 1000
     display.max_colwidth = 199
     display.width = 100
@@ -43,8 +42,10 @@ def gaussian_elimination(a,b,c,d,n):
     return w
     
 
-def finite_diff_method(aa,bb,alpha,beta,n):
-    h = (bb-aa)/(n+1)
+def finite_diff_method(aa,bb,alpha,beta,n, set_h=True):
+    
+    if set_h == True:
+        h = (bb-aa)/(n+1)
     a = np.zeros((n+1))
     b = np.zeros((n+1))
     c = np.zeros((n+1))
@@ -78,11 +79,11 @@ def finite_diff_method(aa,bb,alpha,beta,n):
     return x_list,w
 
 def problem19():
-    aa = 1 
+    aa = 0 
     bb = 2
 
-    alpha = 1
-    beta = 2
+    alpha = 0
+    beta = -4
     n = 9
 
     x_list,w = finite_diff_method(aa,bb,alpha,beta,n)
@@ -109,17 +110,18 @@ def problem19():
 
 if __name__ == "__main__":
     #print in scientific notation for error
-    pd.options.display.float_format = '{:,.2e}'.format
+    pd.options.display.float_format = '{:,.4e}'.format
+
         
     set_pandas_display_options()    
 
     problem19()
 
-    aa = 1 
+    aa = 0 
     bb = 2
 
-    alpha = 1
-    beta = 2
+    alpha = 0
+    beta = -4
     n = 9
 
     x_list_1,w_1 = finite_diff_method(aa,bb,alpha,beta,n)
@@ -170,13 +172,48 @@ if __name__ == "__main__":
                  'true error': error1[:-1],
                  'E1E':estimated_error1_list[:-1]}
     
+    max_estimated_error = max(estimated_error1_list[:-1])
+    c = max_estimated_error/(0.2)**2
+
+    desired_error = 10E-4
+    h_desired = np.sqrt(desired_error/c)
+    print(h_desired)
+    
+    #round h_desired to nearest 0.1
+    
     df = pd.DataFrame(info_dict)
+
     #print in scientific notation for error
-    pd.options.display.float_format = '{:,.5e}'.format
 
     print(df)
-
+    n_desired = math.ceil(((bb-aa)/h_desired) - 1)    
+    x_final, w_final  = finite_diff_method(aa,bb,alpha,beta,n_desired)
     
+    y_list = []
+    error_list = []
+    
+    for estimated,val in zip(w_final,x_final):
+        true_val = true_function(val)
+        y_list.append(true_val)
+        error_val = abs(true_val - estimated)
+        error_list.append(error_val)
+
+    print("c = ",c)
+    print("h_desired = ",h_desired)
+    print("n_desired = ",n_desired)
+    print("max estimated error = ", max(error_list[:-1]))
+
+    # x_list = x.tolist()
+    w_info = w_final.tolist()
+    info_dict = {'x':x_final,
+                 'y':y_list,
+                 'w':w_final,
+                 'error':error_list}
+
+    df = pd.DataFrame(info_dict)
+    
+    print(df)
+
 
 
 

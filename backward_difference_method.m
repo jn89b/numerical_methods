@@ -12,33 +12,6 @@ t = 0.5;
 BDM_12_2_A(alpha,h,0.0005,t)
 BDM_12_2_A(alpha,h,v,t)
 
-% m = 1/h;
-% iterations = t/v;
-% s = al^2*v/h^2;
-% x = zeros(m-1,1);
-
-% %go horizontal
-% for i =1:m-1
-%     x(i) = i*h;
-% end
-
-% w = sin(pi*x);
-% wn = zeros(m-1,1);
-
-% %go vertical
-% [c,d,e] = compute_tridiag(wn, al, v, h);
-
-% for j = 1:iterations
-%     wn = gaussian_diag(c,d,e, w);
-%     w = wn; 
-% end
-
-% %compute true solution
-% u = true_solution(x,t);
-% e = abs(u-w);
-% x_w_u_e = [x,w,u,e]    
-
-
 function BDM_12_2_A(al,h,v,t)
     m = 1/h;
     iterations = t/v;
